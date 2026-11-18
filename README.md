@@ -158,14 +158,14 @@ Depois de cada resposta, o assistente mostra os vizinhos do grafo como **"Assunt
 
 ## 4. Plano de testes, indicadores e interpretação
 
-Detalhes em [`docs/testes.md`](docs/testes.md). Executar pela opção **3** do menu (gera `data/resultados_testes.csv` e `data/comparacao_modelos.csv`).
+Detalhes em [`docs/testes.md`](docs/testes.md). Os testes automáticos da base rodam pela opção **3** do menu (gera `data/resultados_testes.csv` e `data/comparacao_modelos.csv`). O teste de usabilidade é feito com uma pessoa real no **bot do Telegram em produção**.
 
 | Indicador | Resultado |
 |---|---|
 | Perguntas de teste | 20 (5 diretas, 8 reformulações, 3 fora do tema, 4 casos-limite) |
 | Taxa de acerto | **95,0%** (19/20) |
 | Tempo médio de consulta | cerca de 0,4 ms (máximo abaixo de 1 ms) |
-| Facilidade de uso | roteiro de 5 tarefas + nota de 1 a 5 registrada pela opção 4 |
+| Facilidade de uso | teste com usuário real **no bot do Telegram**: roteiro de 5 tarefas, tempo, taxa de conclusão e notas de 1 a 5 (ver `docs/testes.md`, seção 6) |
 
 **Interpretação:** a busca acertou todas as perguntas diretas e reformuladas e **não inventou resposta** para nenhuma pergunta fora do tema. O único erro (T18, a palavra solta "golpe") mostra que a ambiguidade só é detectada quando há empate de pontuação. **Melhorias:** (1) tratar perguntas genéricas de uma palavra mostrando os assuntos do tema; (2) dicionário de sinônimos e tolerância a erros de digitação; (3) testar com perguntas de usuários reais. **Limitação da avaliação:** as perguntas foram escritas pela própria equipe, e a amostra é pequena.
 

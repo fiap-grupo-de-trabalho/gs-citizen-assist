@@ -62,23 +62,43 @@ Como executar: `python src/sistema.py` e, no menu, a opção **3 - Executar test
 2. **Tratar sinônimos e erros de digitação:** um dicionário de sinônimos ("zap" → "whatsapp", "BO" → "boletim de ocorrência") e uma comparação aproximada de palavras.
 3. **Testar com perguntas reais:** coletar perguntas de usuários de teste (sem dados pessoais) para não depender de perguntas escritas pela equipe.
 
-## 6. Teste de facilidade de uso
+## 6. Teste de facilidade de uso (pelo bot do Telegram)
 
-### Roteiro de tarefas (aplicar com pelo menos 1 usuário de teste)
+O teste de usabilidade é feito no **bot em produção** ([t.me/citizen_assist_ai_bot](https://t.me/citizen_assist_ai_bot)), porque é assim que o cidadão vai usar o assistente: pelo celular, conversando com a IA. A busca local e os indicadores das seções 1 a 5 medem a **precisão da base**; este teste mede se uma pessoa real **consegue ser ajudada** na conversa.
 
-Peça ao participante (de preferência alguém com pouca familiaridade com tecnologia) para realizar as tarefas abaixo **sem ajuda**, e anote o tempo e as dificuldades:
+### Como aplicar
 
-| Nº | Tarefa | Critério de sucesso |
+- **Participantes:** pelo menos 1, de preferência alguém do público-alvo (pessoa mais velha ou com pouca familiaridade com tecnologia), usando o **próprio celular**.
+- **Antes de começar:** explique que é um teste do assistente, não da pessoa, e peça para ela **não enviar dados reais** (CPF, telefone, senhas).
+- **Durante:** leia cada tarefa em voz alta e não ajude. Anote se concluiu, o tempo (do início da tarefa até a pessoa dizer que entendeu) e o que gerou dúvida.
+- **Tempo de resposta do bot:** fica registrado nos logs do container no Dokploy ("Mensagem respondida em X s"), junto com a conferência com a base.
+
+### Roteiro de tarefas
+
+| Nº | Tarefa lida ao participante | Critério de sucesso |
 |---|---|---|
-| 1 | Descobrir o que fazer se cair em um golpe do Pix, digitando uma pergunta | Chegar à orientação GOL01 e ler a fonte |
-| 2 | A partir da resposta anterior, descobrir como registrar o boletim de ocorrência | Usar a navegação por assuntos relacionados |
-| 3 | Pelo menu de temas, descobrir o prazo para desistir de uma compra pela internet | Chegar à orientação CON01 |
-| 4 | Perguntar algo que o assistente não sabe (ex.: passaporte) | Entender o aviso de "sem orientação confiável" |
-| 5 | Dar uma nota de facilidade de uso (opção 4 do menu) | Nota registrada |
+| 1 | "Abra o assistente pelo QR Code (ou link) e comece a conversa." | Encontra o bot, toca em **Iniciar** e lê a mensagem de boas-vindas |
+| 2 | "Imagine que você fez um Pix para um golpista. Pergunte ao assistente o que fazer, do seu jeito." | Diz qual é a primeira ação (avisar o banco e pedir a devolução pelo MED) e aponta onde está a fonte |
+| 3 | "E se o banco não resolver? Continue a conversa." | O bot usa o contexto, e a pessoa entende que pode reclamar no consumidor.gov.br ou no Procon |
+| 4 | "Você comprou um produto pela internet e se arrependeu. Pergunte se pode devolver." | Diz o prazo de 7 dias |
+| 5 | "Pergunte como tirar o passaporte." | Entende que o bot não tem essa orientação e indica o canal oficial |
+
+### Perguntas depois do teste (notas de 1 a 5)
+
+| Pergunta | Escala |
+|---|---|
+| P1. Foi fácil usar o assistente? | 1 = muito difícil · 5 = muito fácil |
+| P2. As respostas foram fáceis de entender? | 1 = nada claras · 5 = muito claras |
+| P3. Você se sentiu acolhido(a) pela conversa? | 1 = nada · 5 = muito |
+| P4. Você seguiria a orientação do assistente? | 1 = de jeito nenhum · 5 = com certeza |
+| P5. Você percebeu que a resposta citava uma fonte oficial? | sim / não |
+| P6. O que mais atrapalhou? E o que mais ajudou? | resposta livre |
 
 ### Resultado do teste de usabilidade
 
-> **A PREENCHER PELA EQUIPE após aplicar o roteiro com um usuário real.** A nota fica registrada pela opção 4 do menu em `data/avaliacoes_uso.csv`, e a média aparece na opção 3.
+> **A PREENCHER PELA EQUIPE após aplicar o roteiro.** Para mais participantes, repita as colunas.
+
+**Participante 1** (perfil, sem dados pessoais; ex.: "mulher, 60+, usa WhatsApp todo dia"): ____
 
 | Tarefa | Concluiu? (s/n) | Tempo (s) | Dificuldade observada |
 |---|---|---|---|
@@ -88,4 +108,22 @@ Peça ao participante (de preferência alguém com pouca familiaridade com tecno
 | 4 | | | |
 | 5 | | | |
 
-Nota média de facilidade (1 a 5): ____
+| P1 Facilidade | P2 Clareza | P3 Acolhimento | P4 Confiança | P5 Viu a fonte? |
+|---|---|---|---|---|
+| | | | | |
+
+Comentários (P6): ____
+
+### Indicadores de usabilidade
+
+| Indicador | Como calcular | Resultado |
+|---|---|---|
+| Taxa de conclusão das tarefas | tarefas concluídas ÷ tarefas aplicadas | ____ |
+| Tempo médio por tarefa | soma dos tempos ÷ tarefas | ____ |
+| Tempo médio de resposta do bot | média dos "Mensagem respondida em X s" nos logs do Dokploy | ____ |
+| Nota média de facilidade (P1) | média das notas | ____ |
+| Nota média de clareza (P2) | média das notas | ____ |
+
+### Interpretação
+
+> **A PREENCHER:** o que funcionou, onde houve dificuldade e qual melhoria isso sugere (por exemplo: respostas longas demais para o celular, pessoa não percebeu a fonte, dúvida sobre como começar).
