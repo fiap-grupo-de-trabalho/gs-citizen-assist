@@ -1,0 +1,122 @@
+[
+  {
+    "id": "T01",
+    "tipo": "direta",
+    "pergunta": "Caí num golpe do Pix, o que eu faço?",
+    "esperado": "GOL01"
+  },
+  {
+    "id": "T02",
+    "tipo": "direta",
+    "pergunta": "Como saber se um boleto é falso?",
+    "esperado": "GOL04"
+  },
+  {
+    "id": "T03",
+    "tipo": "direta",
+    "pergunta": "Posso desistir de uma compra feita pela internet?",
+    "esperado": "CON01"
+  },
+  {
+    "id": "T04",
+    "tipo": "direta",
+    "pergunta": "Como tirar a segunda via da identidade?",
+    "esperado": "DOC02"
+  },
+  {
+    "id": "T05",
+    "tipo": "direta",
+    "pergunta": "Como registrar boletim de ocorrência pela internet?",
+    "esperado": "DOC01"
+  },
+  {
+    "id": "T06",
+    "tipo": "reformulacao",
+    "pergunta": "Meu filho mandou mensagem de um número novo pedindo dinheiro",
+    "esperado": "GOL02"
+  },
+  {
+    "id": "T07",
+    "tipo": "reformulacao",
+    "pergunta": "Ligaram dizendo ser do banco e pediram minha senha",
+    "esperado": "GOL05"
+  },
+  {
+    "id": "T08",
+    "tipo": "reformulacao",
+    "pergunta": "A geladeira que eu comprei chegou quebrada",
+    "esperado": "CON03"
+  },
+  {
+    "id": "T09",
+    "tipo": "reformulacao",
+    "pergunta": "Me cobraram uma conta que eu já tinha pago",
+    "esperado": "CON04"
+  },
+  {
+    "id": "T10",
+    "tipo": "reformulacao",
+    "pergunta": "Roubaram meu celular, como faço o bloqueio?",
+    "esperado": "GOL06"
+  },
+  {
+    "id": "T11",
+    "tipo": "reformulacao",
+    "pergunta": "Quero ver quais chaves pix estão no meu nome",
+    "esperado": "DOC04"
+  },
+  {
+    "id": "T12",
+    "tipo": "reformulacao",
+    "pergunta": "Hackearam meu zap",
+    "esperado": "GOL03"
+  },
+  {
+    "id": "T13",
+    "tipo": "reformulacao",
+    "pergunta": "A loja não quer resolver meu problema, onde reclamo?",
+    "esperado": "CON05"
+  },
+  {
+    "id": "T14",
+    "tipo": "fora_do_tema",
+    "pergunta": "Como faço para tirar passaporte?",
+    "esperado": "SEM_RESPOSTA"
+  },
+  {
+    "id": "T15",
+    "tipo": "fora_do_tema",
+    "pergunta": "Como pedir aposentadoria no INSS?",
+    "esperado": "SEM_RESPOSTA"
+  },
+  {
+    "id": "T16",
+    "tipo": "fora_do_tema",
+    "pergunta": "Qual a previsão do tempo para amanhã?",
+    "esperado": "SEM_RESPOSTA"
+  },
+  {
+    "id": "T17",
+    "tipo": "limite",
+    "pergunta": "",
+    "esperado": "VAZIA"
+  },
+  {
+    "id": "T18",
+    "tipo": "limite",
+    "pergunta": "golpe",
+    "esperado": "AMBIGUA"
+  },
+  {
+    "id": "T19",
+    "tipo": "limite",
+    "pergunta": "asdfgh qwerty",
+    "esperado": "SEM_RESPOSTA"
+  },
+  {
+    "id": "T20",
+    "tipo": "limite",
+    "pergunta": "whatsapp",
+    "esperado": "AMBIGUA"
+  }
+]

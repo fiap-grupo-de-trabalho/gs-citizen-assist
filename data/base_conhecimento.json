@@ -1,0 +1,420 @@
+[
+  {
+    "id": "GOL01",
+    "tema": "Golpes digitais",
+    "titulo": "Caí em um golpe pelo Pix",
+    "pergunta": "O que fazer se caí em um golpe do Pix?",
+    "palavras_chave": [
+      "pix",
+      "golpe",
+      "devolução",
+      "devolver",
+      "med",
+      "contestar",
+      "contestação",
+      "recuperar",
+      "estorno"
+    ],
+    "orientacao": "Avise seu banco na hora, pelo aplicativo (opção de contestar o Pix no extrato) ou pelos canais oficiais, e peça a devolução pelo MED (Mecanismo Especial de Devolução). O pedido pode ser feito em até 80 dias, mas quanto antes, maior a chance de recuperar o dinheiro. A devolução depende de haver saldo na conta do golpista e não é garantida. O MED não vale para Pix enviado por engano nem para desacordo comercial. Guarde os comprovantes e registre um boletim de ocorrência.",
+    "referencia": "Banco Central do Brasil - Guia do MED (Mecanismo Especial de Devolução)",
+    "link": "https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Guia_MED.pdf",
+    "data_verificacao": "2026-11-17",
+    "confirmar": true,
+    "relacionados": [
+      "DOC01",
+      "DOC04",
+      "CON05"
+    ]
+  },
+  {
+    "id": "GOL02",
+    "tema": "Golpes digitais",
+    "titulo": "Golpe do falso parente no WhatsApp",
+    "pergunta": "Um parente com número novo está pedindo dinheiro, é golpe?",
+    "palavras_chave": [
+      "parente",
+      "filho",
+      "filha",
+      "neto",
+      "numero novo",
+      "trocou numero",
+      "pedindo dinheiro",
+      "emprestado",
+      "whatsapp"
+    ],
+    "orientacao": "Se alguém pedir dinheiro dizendo que trocou de número, ligue para o número antigo que você já tem salvo na agenda, nunca para o número novo. Não transfira nada antes de falar com a pessoa. Desconfie de pressa e de pedidos para pagar em conta no nome de outra pessoa.",
+    "referencia": "Febraban - Golpe do WhatsApp",
+    "link": "https://portal.febraban.org.br/DetalheAntifraude/7/pt-br/",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "GOL01",
+      "GOL03",
+      "DOC01"
+    ]
+  },
+  {
+    "id": "GOL03",
+    "tema": "Golpes digitais",
+    "titulo": "WhatsApp clonado ou invadido",
+    "pergunta": "Clonaram meu WhatsApp, o que faço?",
+    "palavras_chave": [
+      "clonado",
+      "clonaram",
+      "clonou",
+      "invadido",
+      "invadiram",
+      "hackeado",
+      "hackearam",
+      "whatsapp",
+      "codigo",
+      "verificação duas etapas"
+    ],
+    "orientacao": "Abra o WhatsApp e entre de novo com o seu número, usando o código de 6 dígitos que chega por SMS ou ligação; isso desconecta quem invadiu. Se pedirem um PIN da verificação em duas etapas que você não conhece, espere 7 dias e tente de novo. Depois ative a verificação em duas etapas, nunca passe códigos para ninguém e avise seus contatos. Se precisar de ajuda, use o \"Fale conosco\" do próprio WhatsApp.",
+    "referencia": "Central de Ajuda do WhatsApp - Conta roubada",
+    "link": "https://faq.whatsapp.com/1131652977717250/?locale=pt_BR",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "GOL02",
+      "GOL06",
+      "DOC01"
+    ]
+  },
+  {
+    "id": "GOL04",
+    "tema": "Golpes digitais",
+    "titulo": "Boleto falso",
+    "pergunta": "Como saber se um boleto é falso?",
+    "palavras_chave": [
+      "boleto",
+      "falso",
+      "adulterado",
+      "beneficiario",
+      "codigo barras",
+      "dda",
+      "pagar conta"
+    ],
+    "orientacao": "Antes de pagar, confira na tela do banco se o nome e o CPF/CNPJ de quem vai receber são da empresa certa, e se valor e vencimento batem. Os 3 primeiros números do código devem ser do banco que aparece no boleto. Se algo não bater, não pague e fale com a empresa pelo canal oficial. Cadastre-se no DDA do seu banco para ver os boletos emitidos no seu nome.",
+    "referencia": "Febraban - Golpe do Falso Boleto",
+    "link": "https://portal.febraban.org.br/DetalheAntifraude/14/pt-br/",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "GOL01",
+      "CON04",
+      "DOC01"
+    ]
+  },
+  {
+    "id": "GOL05",
+    "tema": "Golpes digitais",
+    "titulo": "Ligação da falsa central do banco",
+    "pergunta": "Ligaram dizendo ser do banco, é golpe?",
+    "palavras_chave": [
+      "ligaram",
+      "ligação",
+      "ligou",
+      "telefonema",
+      "central",
+      "funcionario",
+      "atendente",
+      "banco",
+      "senha",
+      "token"
+    ],
+    "orientacao": "Desligue na hora. Não informe senha, códigos nem dados e não faça transferências pedidas por telefone. Ligue você mesmo para o banco, de preferência de outro telefone, usando o número que está atrás do cartão, porque o golpista pode continuar na linha fingindo ser a central.",
+    "referencia": "Febraban - Golpe da Falsa Central",
+    "link": "https://portal.febraban.org.br/DetalheAntifraude/2/pt-br/",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "GOL01",
+      "DOC04",
+      "DOC01"
+    ]
+  },
+  {
+    "id": "GOL06",
+    "tema": "Golpes digitais",
+    "titulo": "Celular roubado ou perdido",
+    "pergunta": "Roubaram meu celular, como bloquear?",
+    "palavras_chave": [
+      "celular",
+      "roubado",
+      "roubaram",
+      "furtado",
+      "furtaram",
+      "perdido",
+      "perdi",
+      "bloquear",
+      "bloqueio",
+      "chip",
+      "aparelho"
+    ],
+    "orientacao": "Entre no programa Celular Seguro (site ou aplicativo, com sua conta gov.br) e emita o alerta: ele bloqueia a linha e as contas nos bancos parceiros, e o bloqueio total também trava o aparelho. Cadastre antes \"pessoas de confiança\", que podem emitir o alerta por você. O alerta não substitui o boletim de ocorrência. O desbloqueio é feito na loja da operadora e no banco.",
+    "referencia": "Ministério da Justiça e Segurança Pública - Celular Seguro",
+    "link": "https://www.gov.br/mj/pt-br/acesso-a-informacao/acoes-e-programas/celular-seguro/duvidas-frequentes",
+    "data_verificacao": "2026-11-17",
+    "confirmar": true,
+    "relacionados": [
+      "DOC01",
+      "GOL03",
+      "DOC04"
+    ]
+  },
+  {
+    "id": "CON01",
+    "tema": "Direitos do consumidor",
+    "titulo": "Desistir de compra pela internet (arrependimento)",
+    "pergunta": "Posso desistir de uma compra feita pela internet?",
+    "palavras_chave": [
+      "desistir",
+      "desisti",
+      "arrependimento",
+      "arrependi",
+      "internet",
+      "online",
+      "site",
+      "telefone",
+      "cancelar compra"
+    ],
+    "orientacao": "Na compra feita fora da loja física, como pela internet ou por telefone, você pode desistir em até 7 dias depois de receber o produto ou assinar o contrato, sem precisar explicar o motivo. Os valores pagos devem ser devolvidos imediatamente, com correção (artigo 49 do Código de Defesa do Consumidor).",
+    "referencia": "Código de Defesa do Consumidor - Lei 8.078/1990, art. 49",
+    "link": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "CON05",
+      "CON06",
+      "CON03"
+    ]
+  },
+  {
+    "id": "CON02",
+    "tema": "Direitos do consumidor",
+    "titulo": "Prazo para reclamar de defeito (garantia legal)",
+    "pergunta": "Qual o prazo de garantia para reclamar de um produto?",
+    "palavras_chave": [
+      "garantia",
+      "prazo",
+      "duravel",
+      "eletrodomestico",
+      "90 dias",
+      "30 dias"
+    ],
+    "orientacao": "Para defeito fácil de ver, você tem 30 dias para reclamar se o produto ou serviço não é durável (como alimentos) e 90 dias se é durável (como eletrodomésticos), contados da entrega do produto ou do fim do serviço (artigo 26 do Código de Defesa do Consumidor).",
+    "referencia": "Código de Defesa do Consumidor - Lei 8.078/1990, art. 26",
+    "link": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "CON03",
+      "CON05",
+      "CON06"
+    ]
+  },
+  {
+    "id": "CON03",
+    "tema": "Direitos do consumidor",
+    "titulo": "Produto com defeito",
+    "pergunta": "Comprei um produto que veio com defeito, o que fazer?",
+    "palavras_chave": [
+      "defeito",
+      "defeituoso",
+      "quebrado",
+      "quebrada",
+      "estragado",
+      "estragada",
+      "conserto",
+      "consertar",
+      "trocar",
+      "troca"
+    ],
+    "orientacao": "O fornecedor (loja ou fabricante) tem até 30 dias para resolver o defeito. Se não resolver, você escolhe: trocar por outro produto igual, receber o dinheiro de volta corrigido ou ter um desconto proporcional no preço (artigo 18 do Código de Defesa do Consumidor).",
+    "referencia": "Código de Defesa do Consumidor - Lei 8.078/1990, art. 18",
+    "link": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "CON02",
+      "CON01",
+      "CON06"
+    ]
+  },
+  {
+    "id": "CON04",
+    "tema": "Direitos do consumidor",
+    "titulo": "Cobrança indevida ou abusiva",
+    "pergunta": "Paguei uma cobrança indevida, tenho direito a quê?",
+    "palavras_chave": [
+      "cobrança",
+      "indevida",
+      "cobraram",
+      "cobrado",
+      "cobrando",
+      "dobro",
+      "paguei",
+      "pago",
+      "ameaça",
+      "constrangimento"
+    ],
+    "orientacao": "Se você pagou uma cobrança que não devia, tem direito a receber de volta o dobro do que pagou a mais, com correção e juros, salvo engano justificável. Na cobrança de dívidas, ninguém pode expor você ao ridículo, constranger ou ameaçar (artigo 42 do Código de Defesa do Consumidor).",
+    "referencia": "Código de Defesa do Consumidor - Lei 8.078/1990, art. 42",
+    "link": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "CON05",
+      "CON06",
+      "DOC03"
+    ]
+  },
+  {
+    "id": "CON05",
+    "tema": "Direitos do consumidor",
+    "titulo": "Reclamar no consumidor.gov.br",
+    "pergunta": "Como reclamar de uma empresa pela internet?",
+    "palavras_chave": [
+      "consumidor gov",
+      "reclamação",
+      "reclamar",
+      "reclamo",
+      "empresa",
+      "loja",
+      "resolver",
+      "sac"
+    ],
+    "orientacao": "No site consumidor.gov.br você registra uma reclamação de graça, direto com a empresa, que tem 10 dias para responder. Depois você tem até 20 dias para comentar e avaliar a resposta. Antes, confira se a empresa participa do site. É preciso ter conta gov.br prata ou ouro. O serviço não substitui o SAC nem o Procon.",
+    "referencia": "Consumidor.gov.br - Secretaria Nacional do Consumidor",
+    "link": "https://www.consumidor.gov.br/pages/conteudo/publico/1",
+    "data_verificacao": "2026-11-17",
+    "confirmar": true,
+    "relacionados": [
+      "CON06",
+      "CON01",
+      "CON04"
+    ]
+  },
+  {
+    "id": "CON06",
+    "tema": "Direitos do consumidor",
+    "titulo": "Procurar o Procon",
+    "pergunta": "O que o Procon faz e onde encontro?",
+    "palavras_chave": [
+      "procon",
+      "orgao defesa consumidor",
+      "denuncia",
+      "denunciar empresa",
+      "fiscalizar"
+    ],
+    "orientacao": "O Procon é o órgão estadual ou municipal de defesa do consumidor: orienta, recebe reclamações e denúncias e apura irregularidades das empresas. Procure o Procon da sua cidade ou do seu estado; a lista com endereço, telefone e site está no consumidor.gov.br.",
+    "referencia": "Consumidor.gov.br - Órgãos de defesa do consumidor",
+    "link": "https://www.consumidor.gov.br/pages/principal/orgaos-gestores",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "CON05",
+      "CON04",
+      "CON01"
+    ]
+  },
+  {
+    "id": "DOC01",
+    "tema": "Documentos e registros",
+    "titulo": "Registrar boletim de ocorrência online",
+    "pergunta": "Como registrar boletim de ocorrência pela internet?",
+    "palavras_chave": [
+      "boletim",
+      "ocorrencia",
+      "delegacia",
+      "policia",
+      "registrar"
+    ],
+    "orientacao": "Muitos casos, como golpes e perda ou roubo de documentos e celular, podem ser registrados pela internet, na delegacia virtual da Polícia Civil do seu estado (em São Paulo, a Delegacia Digital). Há também a Delegacia Virtual nacional, para os estados que aderiram, com login gov.br. Crimes graves devem ser registrados presencialmente na delegacia. Em emergência, ligue 190.",
+    "referencia": "gov.br - Registrar ocorrência policial online",
+    "link": "https://www.gov.br/pt-br/servicos/registrar-ocorrencia-policial-online",
+    "data_verificacao": "2026-11-17",
+    "confirmar": true,
+    "relacionados": [
+      "GOL01",
+      "DOC02",
+      "GOL06"
+    ]
+  },
+  {
+    "id": "DOC02",
+    "tema": "Documentos e registros",
+    "titulo": "Segunda via da identidade (CIN)",
+    "pergunta": "Como tirar a segunda via da identidade?",
+    "palavras_chave": [
+      "identidade",
+      "carteira identidade",
+      "cin",
+      "segunda via",
+      "documento perdido",
+      "perdi documento"
+    ],
+    "orientacao": "A nova Carteira de Identidade Nacional (CIN) usa o número do CPF e a primeira via em papel é gratuita. Ela é emitida pelo órgão de identificação do seu estado (em São Paulo, pelo Poupatempo); agende pelo link do seu estado na página do gov.br. A segunda via pode ter taxa, dependendo do estado.",
+    "referencia": "gov.br - Carteira de Identidade Nacional",
+    "link": "https://www.gov.br/governodigital/pt-br/identidade/cin",
+    "data_verificacao": "2026-11-17",
+    "confirmar": true,
+    "relacionados": [
+      "DOC01",
+      "DOC03",
+      "GOL06"
+    ]
+  },
+  {
+    "id": "DOC03",
+    "tema": "Documentos e registros",
+    "titulo": "Situação do CPF",
+    "pergunta": "Como consultar e regularizar meu CPF?",
+    "palavras_chave": [
+      "cpf",
+      "situação",
+      "regularizar",
+      "pendente",
+      "suspenso",
+      "receita federal",
+      "irregular"
+    ],
+    "orientacao": "Consulte de graça a situação do seu CPF no site da Receita Federal. Se aparecer \"pendente de regularização\", normalmente falta entregar uma declaração de imposto de renda. Se estiver \"suspenso\", atualize seus dados online. Inscrever, consultar e atualizar o CPF é gratuito.",
+    "referencia": "Receita Federal - Meu CPF",
+    "link": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-cpf",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "DOC02",
+      "DOC04",
+      "CON04"
+    ]
+  },
+  {
+    "id": "DOC04",
+    "tema": "Documentos e registros",
+    "titulo": "Ver contas, chaves Pix e empréstimos no seu nome (Registrato)",
+    "pergunta": "Como saber quais contas e chaves Pix existem no meu nome?",
+    "palavras_chave": [
+      "registrato",
+      "chave pix",
+      "chaves",
+      "contas",
+      "conta aberta",
+      "emprestimo",
+      "meu nome",
+      "banco central"
+    ],
+    "orientacao": "No Registrato, do Banco Central, você vê de graça em quais bancos tem conta, quais chaves Pix e quais empréstimos estão ligados ao seu CPF. Entre pelo Meu BC com sua conta gov.br prata ou ouro e verificação em duas etapas ativada. Se encontrar algo que não reconhece, procure o banco e registre um boletim de ocorrência.",
+    "referencia": "Banco Central do Brasil - Registrato (Meu BC)",
+    "link": "https://meubc.bcb.gov.br/meubc/",
+    "data_verificacao": "2026-11-17",
+    "confirmar": false,
+    "relacionados": [
+      "GOL01",
+      "DOC03",
+      "GOL05"
+    ]
+  }
+]

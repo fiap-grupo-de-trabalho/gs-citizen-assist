@@ -1,0 +1,14 @@
+[project]
+name = "gs-citizen-assist"
+version = "0.1.0"
+description = "Citizen Assist AI - assistente de orientação cidadã sobre golpes digitais, direitos do consumidor e documentos (Global Solution 2026.2 - FIAP)"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Carlos Eugênio", email = "carloseugenioprofissional@gmail.com" },
+    { name = "Emanuel" },
+    { name = "Leonardo Tims" },
+    { name = "Matheus Fuchelberguer Neves", email = "fuchelberguerneves@gmail.com" },
+    { name = "Rodrigo Gomes Dias", email = "rodrigogmdias@gmail.com" },
+]
+dependencies = []

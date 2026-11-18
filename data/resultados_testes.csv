@@ -1,0 +1,22 @@
+id;tipo;pergunta;esperado;obtido;resultado;tempo_ms
+T01;direta;Caí num golpe do Pix, o que eu faço?;GOL01;GOL01;acerto;0.393
+T02;direta;Como saber se um boleto é falso?;GOL04;GOL04;acerto;0.353
+T03;direta;Posso desistir de uma compra feita pela internet?;CON01;CON01;acerto;0.355
+T04;direta;Como tirar a segunda via da identidade?;DOC02;DOC02;acerto;0.351
+T05;direta;Como registrar boletim de ocorrência pela internet?;DOC01;DOC01;acerto;0.365
+T06;reformulacao;Meu filho mandou mensagem de um número novo pedindo dinheiro;GOL02;GOL02;acerto;0.393
+T07;reformulacao;Ligaram dizendo ser do banco e pediram minha senha;GOL05;GOL05;acerto;0.367
+T08;reformulacao;A geladeira que eu comprei chegou quebrada;CON03;CON03;acerto;0.378
+T09;reformulacao;Me cobraram uma conta que eu já tinha pago;CON04;CON04;acerto;0.361
+T10;reformulacao;Roubaram meu celular, como faço o bloqueio?;GOL06;GOL06;acerto;0.349
+T11;reformulacao;Quero ver quais chaves pix estão no meu nome;DOC04;DOC04;acerto;0.346
+T12;reformulacao;Hackearam meu zap;GOL03;GOL03;acerto;0.341
+T13;reformulacao;A loja não quer resolver meu problema, onde reclamo?;CON05;CON05;acerto;0.353
+T14;fora_do_tema;Como faço para tirar passaporte?;SEM_RESPOSTA;SEM_RESPOSTA;acerto;0.336
+T15;fora_do_tema;Como pedir aposentadoria no INSS?;SEM_RESPOSTA;SEM_RESPOSTA;acerto;0.339
+T16;fora_do_tema;Qual a previsão do tempo para amanhã?;SEM_RESPOSTA;SEM_RESPOSTA;acerto;0.906
+T17;limite;;VAZIA;VAZIA;acerto;0.003
+T18;limite;golpe;AMBIGUA;GOL01;erro;0.621
+T19;limite;asdfgh qwerty;SEM_RESPOSTA;SEM_RESPOSTA;acerto;0.701
+T20;limite;whatsapp;AMBIGUA;AMBIGUA;acerto;0.625
+TOTAL;;;;19/20;95.0%;0.412
