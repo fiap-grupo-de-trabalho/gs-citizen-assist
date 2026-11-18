@@ -2,6 +2,25 @@
 
 **Global Solution 2026.2 (CitizenTech), FIAP, Graduação em Ciência da Computação, Fase 7**
 
+> [!IMPORTANT]
+> ## 🤖 Teste agora: o bot está em produção no Telegram
+>
+> ### 👉 [t.me/citizen_assist_ai_bot](https://t.me/citizen_assist_ai_bot)
+>
+> O **Citizen Assist AI** está publicado e funcionando 24 horas por dia como bot do Telegram. Ele roda em um servidor próprio, com deploy pelo **Dokploy** a partir deste repositório (Dockerfile).
+>
+> **Como testar:**
+>
+> 1. Abra o link acima no celular ou no Telegram Desktop e toque em **Iniciar** (`/start`). O bot já recebe você com uma mensagem de boas-vindas.
+> 2. Conte sua situação do seu jeito, por exemplo:
+>    - *"caí num golpe do pix, o que eu faço?"*
+>    - *"meu filho mandou mensagem de um número novo pedindo dinheiro"*
+>    - *"comprei pela internet e quero devolver"*
+>    - *"e se o banco não resolver?"* (o bot lembra da conversa)
+> 3. Teste também os limites: pergunte algo fora dos temas (ex.: *"como tiro passaporte?"*) ou tente enviar um CPF.
+>
+> A conversa é feita pela IA (**Claude Haiku 5.5**), com tom acolhedor e **usando apenas a base verificada**, sempre com a fonte oficial no fim da resposta. É um projeto acadêmico, **não é canal oficial**: não envie dados pessoais.
+
 ## Equipe
 
 **Grupo 17**
@@ -166,7 +185,7 @@ Execute a partir da pasta raiz do projeto (onde fica este README).
 
 ### Bot do Telegram (opção 8, opcional)
 
-A opção 8 coloca o assistente para funcionar como **bot do Telegram** (@citizen_assist_ai_bot), para o cidadão usar pelo celular, onde já está acostumado a conversar. No Telegram, a conversa é **sempre pela IA** (Claude Haiku 5.5, com as regras do Modelo C e a base verificada), para que o atendimento seja **humanizado**: acolhedor, com empatia, em linguagem simples e sem comandos para decorar.
+A opção 8 coloca o assistente para funcionar como **bot do Telegram** ([@citizen_assist_ai_bot](https://t.me/citizen_assist_ai_bot), **em produção**), para o cidadão usar pelo celular, onde já está acostumado a conversar. No Telegram, a conversa é **sempre pela IA** (Claude Haiku 5.5, com as regras do Modelo C e a base verificada), para que o atendimento seja **humanizado**: acolhedor, com empatia, em linguagem simples e sem comandos para decorar.
 
 1. No Telegram, fale com o **@BotFather**, envie `/newbot`, escolha um nome e copie o **token** gerado.
 2. Defina o token do Telegram e a chave da Anthropic (as duas são obrigatórias para o bot):
