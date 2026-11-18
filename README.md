@@ -1,29 +1,41 @@
-# Citizen Assist AI: golpes digitais, direitos do consumidor e documentos
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo/citizen-assist-logo-reverse.svg">
+    <img src="assets/logo/citizen-assist-logo-color.svg" alt="Citizen Assist AI" width="360">
+  </picture>
+</p>
 
-**Global Solution 2026.2 (CitizenTech), FIAP, Graduação em Ciência da Computação, Fase 7**
+<p align="center"><b>Orientação simples e verificada contra golpes digitais.</b><br>
+Golpes digitais · direitos do consumidor · documentos, sempre com a fonte oficial.</p>
 
-> [!IMPORTANT]
-> ## 🤖 Teste agora: o bot está em produção no Telegram
->
-> ### 👉 [t.me/citizen_assist_ai_bot](https://t.me/citizen_assist_ai_bot)
->
-> <a href="https://t.me/citizen_assist_ai_bot"><img src="assets/qrcode-bot-telegram.png" alt="QR Code para abrir o bot @citizen_assist_ai_bot no Telegram" width="200"></a>
->
-> 📱 **No celular:** aponte a câmera para o QR Code e o Telegram abre direto na conversa com o bot.
->
-> O **Citizen Assist AI** está publicado e funcionando 24 horas por dia como bot do Telegram. Ele roda em um servidor próprio, com deploy pelo **Dokploy** a partir deste repositório (Dockerfile).
->
-> **Como testar:**
->
-> 1. Abra o link acima no celular ou no Telegram Desktop e toque em **Iniciar** (`/start`). O bot já recebe você com uma mensagem de boas-vindas.
-> 2. Conte sua situação do seu jeito, por exemplo:
->    - *"caí num golpe do pix, o que eu faço?"*
->    - *"meu filho mandou mensagem de um número novo pedindo dinheiro"*
->    - *"comprei pela internet e quero devolver"*
->    - *"e se o banco não resolver?"* (o bot lembra da conversa)
-> 3. Teste também os limites: pergunte algo fora dos temas (ex.: *"como tiro passaporte?"*) ou tente enviar um CPF.
->
-> A conversa é feita pela IA (**Claude Haiku 5.5**), com tom acolhedor e **usando apenas a base verificada**, sempre com a fonte oficial no fim da resposta. É um projeto acadêmico, **não é canal oficial**: não envie dados pessoais.
+<p align="center">
+  <a href="https://t.me/citizen_assist_ai_bot"><img alt="Telegram: em produção" src="https://img.shields.io/badge/Telegram-em%20produ%C3%A7%C3%A3o-F2A516?style=for-the-badge&labelColor=0B5D5E&logo=telegram&logoColor=white"></a>
+  <img alt="IA: Claude Haiku 5.5" src="https://img.shields.io/badge/IA-Claude%20Haiku%205.5-0B5D5E?style=for-the-badge&labelColor=073B3C">
+  <img alt="Taxa de acerto: 95%" src="https://img.shields.io/badge/acerto-95%25-0B5D5E?style=for-the-badge&labelColor=073B3C">
+  <img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-0B5D5E?style=for-the-badge&labelColor=073B3C&logo=python&logoColor=white">
+</p>
+
+<p align="center"><b>Global Solution 2026.2 (CitizenTech) · FIAP · Ciência da Computação · Fase 7 · Grupo 17</b></p>
+
+---
+
+## Teste agora: o bot está em produção no Telegram
+
+<a href="https://t.me/citizen_assist_ai_bot"><img src="assets/banner-bot-telegram.png" alt="Citizen Assist AI em produção. Teste agora no Telegram: t.me/citizen_assist_ai_bot. Aponte a câmera do celular para o QR Code para abrir a conversa com o bot."></a>
+
+O **Citizen Assist AI** está publicado e funcionando 24 horas por dia em [**t.me/citizen_assist_ai_bot**](https://t.me/citizen_assist_ai_bot). Ele roda em servidor próprio, com deploy pelo **Dokploy** a partir deste repositório (Dockerfile). No celular, aponte a câmera para o QR Code acima.
+
+**Como testar:**
+
+1. Abra o bot e toque em **Iniciar** (`/start`). Ele já recebe você com uma mensagem de boas-vindas.
+2. Conte sua situação do seu jeito, por exemplo:
+   - *"caí num golpe do pix, o que eu faço?"*
+   - *"meu filho mandou mensagem de um número novo pedindo dinheiro"*
+   - *"comprei pela internet e quero devolver"*
+   - *"e se o banco não resolver?"* (o bot lembra da conversa)
+3. Teste também os limites: pergunte algo fora dos temas (*"como tiro passaporte?"*) ou tente enviar um CPF.
+
+A conversa é feita pela IA (**Claude Haiku 5.5**), em tom acolhedor e **usando apenas a base verificada**, sempre com a fonte oficial no fim da resposta. É um projeto acadêmico e **não é canal oficial**: não envie dados pessoais.
 
 ## Equipe
 
@@ -303,7 +315,9 @@ Reescreva a pergunta sem essas informações.
 gs-citizen-assist/
 ├── README.md
 ├── assets/
-│   └── qrcode-bot-telegram.png    # QR Code de acesso ao bot no Telegram
+│   ├── banner-bot-telegram.png    # banner do bot com QR Code (identidade visual)
+│   ├── capa-bot-telegram.png      # imagem de descrição do bot no Telegram
+│   └── logo/                      # logo, símbolo e avatar oficiais da marca
 ├── pyproject.toml                 # metadados do projeto e autores (uv)
 ├── src/
 │   └── sistema.py                 # programa principal (menu, busca, respostas, testes)
