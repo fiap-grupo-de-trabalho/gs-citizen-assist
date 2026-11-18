@@ -7,6 +7,10 @@
 >
 > ### 👉 [t.me/citizen_assist_ai_bot](https://t.me/citizen_assist_ai_bot)
 >
+> <a href="https://t.me/citizen_assist_ai_bot"><img src="assets/qrcode-bot-telegram.png" alt="QR Code para abrir o bot @citizen_assist_ai_bot no Telegram" width="200"></a>
+>
+> 📱 **No celular:** aponte a câmera para o QR Code e o Telegram abre direto na conversa com o bot.
+>
 > O **Citizen Assist AI** está publicado e funcionando 24 horas por dia como bot do Telegram. Ele roda em um servidor próprio, com deploy pelo **Dokploy** a partir deste repositório (Dockerfile).
 >
 > **Como testar:**
@@ -298,6 +302,8 @@ Reescreva a pergunta sem essas informações.
 ```text
 gs-citizen-assist/
 ├── README.md
+├── assets/
+│   └── qrcode-bot-telegram.png    # QR Code de acesso ao bot no Telegram
 ├── pyproject.toml                 # metadados do projeto e autores (uv)
 ├── src/
 │   └── sistema.py                 # programa principal (menu, busca, respostas, testes)
