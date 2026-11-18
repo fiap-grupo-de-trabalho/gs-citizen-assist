@@ -17,7 +17,7 @@ O assistente funciona de dois jeitos:
 1. **Opções 1 a 6 (sem IA externa):** toda resposta vem direto da base `data/base_conhecimento.json`, por busca de palavras-chave. Os modelos A e B são instruções de resposta que o próprio código aplica. Essas opções não "alucinam": se a pergunta não bate com a base, o assistente avisa que não tem orientação confiável. São as opções usadas nos testes e indicadores (opção 3).
 2. **Opção 7 (chat com LLM):** usa o modelo `claude-haiku-5-5`, da Anthropic, pela biblioteca oficial `anthropic`. O modelo recebe o prompt do Modelo C (`docs/prompts.md`) com a base verificada inteira e a regra de responder **somente** com ela e citar a fonte.
 
-O mesmo chat está disponível no **bot do Telegram** (opção 8 do menu, comando `/ia`). Cada conversa do Telegram tem seu próprio histórico, e toda resposta da IA no bot também vem acompanhada da conferência com a base.
+O **bot do Telegram** (opção 8 do menu, @citizen_assist_ai_bot) conversa **somente pela IA**, para tornar o atendimento humanizado. Ao receber o `/start`, a IA já envia a mensagem de boas-vindas. Cada conversa tem seu próprio histórico. Para cada mensagem, o bot registra no terminal a conferência com a base (ids das orientações verificadas que a busca local encontra para a mesma pergunta), sem gravar o texto da conversa.
 
 ### Como as respostas do modelo externo são confrontadas com a base
 

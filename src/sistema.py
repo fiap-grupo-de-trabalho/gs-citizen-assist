@@ -13,6 +13,9 @@ except ImportError:
     requests = None
 
 TELEGRAM_API = "https://api.telegram.org/bot"
+conexao_telegram = None
+if requests is not None:
+    conexao_telegram = requests.Session()
 
 MODELO_IA = "claude-haiku-5-5"
 
@@ -28,10 +31,23 @@ sugira os temas disponíveis e recomende procurar o canal oficial. Nunca invente
 - Quando a orientação tiver "confirmar": true, avise que regras e prazos podem mudar e devem ser confirmados no canal oficial.
 - Nunca peça CPF, senhas, telefone, endereço ou outros dados pessoais.
 - Nunca diga que é um canal oficial de órgão público, banco ou empresa.
-- Responda em português do Brasil, em até 6 frases curtas, sem tabelas.
+- Converse de forma acolhedora e humana, como uma pessoa paciente ajudando alguém que pode estar \
+nervoso ou com pouca familiaridade com tecnologia. Mostre empatia quando a pessoa relatar um problema.
+- Responda em português do Brasil, em até 6 frases curtas, em texto simples, sem tabelas e sem \
+formatação markdown (não use asteriscos, cerquilhas ou listas com marcadores).
 
 BASE VERIFICADA (JSON):
 """
+
+PEDIDO_SAUDACAO = ("[O cidadão acabou de abrir a conversa pelo Telegram e ainda não escreveu nada. "
+                   "Dê as boas-vindas com calor humano, apresente-se como Citizen Assist AI em poucas "
+                   "frases, diga que pode ajudar com golpes digitais, direitos do consumidor e "
+                   "documentos, lembre que você não é um canal oficial e peça para a pessoa contar o "
+                   "que aconteceu, sem enviar CPF, senhas ou outros dados pessoais. Não cite fonte nesta mensagem.]")
+
+SAUDACAO_PADRAO = ("Olá! Que bom ter você aqui. Eu sou o Citizen Assist AI e posso ajudar com golpes "
+                   "digitais, direitos do consumidor e documentos. Sou um projeto acadêmico, não um "
+                   "canal oficial. Me conte o que aconteceu, mas não envie CPF, senhas ou outros dados pessoais.")
 
 ARQUIVO_BASE = "data/base_conhecimento.json"
 ARQUIVO_TESTES = "data/perguntas_teste.json"
@@ -656,89 +672,40 @@ def conversar_com_ia(base):
         linha()
 
 
-BOAS_VINDAS = """Olá! Eu sou o Citizen Assist AI.
-Oriento sobre golpes digitais, direitos do consumidor e documentos, sempre com a fonte oficial.
-
-Como usar:
-- Escreva sua dúvida, por exemplo: caí num golpe do pix
-- /temas mostra todos os assuntos
-- /ia conversa com a inteligência artificial (respostas baseadas na mesma base verificada)
-- /busca volta para a busca direta na base verificada
-- /ajuda mostra esta mensagem
-
-Não envie CPF, senhas, telefone ou outros dados pessoais.
-""" + AVISO_NAO_OFICIAL
-
-
-def texto_relacionados(registro, indice):
-    if len(registro["relacionados"]) == 0:
-        return ""
-    texto = "\n\nAssuntos relacionados (toque para abrir):"
-    for codigo in registro["relacionados"]:
-        texto += f"\n/{codigo.lower()} - {indice[codigo]['titulo']}"
-    return texto
-
-
-def texto_temas(temas):
-    texto = "Assuntos disponíveis (toque para abrir):"
-    for nome in temas:
-        texto += f"\n\n{nome}:"
-        for registro in temas[nome]:
-            texto += f"\n/{registro['id'].lower()} - {registro['titulo']}"
-    return texto
-
-
-def responder_telegram(texto, base, indice, temas, sessao, cliente_ia, instrucao):
+def responder_telegram(texto, historico, cliente_ia, instrucao):
     texto = texto.strip()
     if texto == "":
-        return "Envie sua dúvida em texto. Exemplo: caí num golpe do pix"
+        return "Por enquanto eu só consigo ler mensagens de texto. Pode me escrever o que aconteceu?"
 
-    if texto.startswith("/"):
-        comando = texto.split()[0].split("@")[0].lower()
-        if comando == "/start" or comando == "/ajuda":
-            return BOAS_VINDAS
-        if comando == "/temas":
-            return texto_temas(temas)
-        if comando == "/busca":
-            sessao["modo"] = "busca"
-            sessao["historico"] = []
-            return "Modo busca ativado: respondo direto com a base verificada."
-        if comando == "/ia":
-            if cliente_ia is None:
-                return "O chat com IA não está disponível agora. Use a busca direta escrevendo sua dúvida."
-            sessao["modo"] = "ia"
-            sessao["historico"] = []
-            return (f"Modo IA ativado ({MODELO_IA}). Pode perguntar à vontade; "
-                    f"as mensagens são enviadas à API da Anthropic. Use /busca para sair.")
-        codigo = comando[1:].upper()
-        if codigo in indice:
-            registro = indice[codigo]
-            return formatar_modelo_b(registro) + texto_relacionados(registro, indice)
-        return "Comando não reconhecido. Use /ajuda para ver as opções."
+    if texto.lower().startswith("/start"):
+        historico.clear()
+        resposta = perguntar_ia(cliente_ia, instrucao, historico, PEDIDO_SAUDACAO)
+        if len(historico) == 0:
+            return SAUDACAO_PADRAO
+        return resposta
 
     if parece_dado_pessoal(texto):
-        return ("Por segurança, não envie CPF, telefone, e-mail ou outros dados pessoais. "
-                "Reescreva a pergunta sem essas informações.")
+        return ("Para sua segurança, não me envie CPF, telefone, e-mail ou outros dados pessoais. "
+                "Pode me contar o que aconteceu sem essas informações?")
 
-    if sessao["modo"] == "ia":
-        resposta = perguntar_ia(cliente_ia, instrucao, sessao["historico"], texto)
-        return resposta + "\n\n" + texto_conferencia(texto, base)
+    return perguntar_ia(cliente_ia, instrucao, historico, texto)
 
+
+def ids_na_base(texto, base):
+    if texto.startswith("/") or parece_dado_pessoal(texto):
+        return "-"
     situacao, encontrados = buscar(texto, base)
-    if situacao == "ok":
-        registro = encontrados[0]
-        return formatar_modelo_b(registro) + texto_relacionados(registro, indice)
-    if situacao == "ambigua":
-        resposta = "Sua pergunta combina com mais de um assunto. Qual deles você procura?"
+    if situacao == "ok" or situacao == "ambigua":
+        ids = []
         for registro in encontrados:
-            resposta += f"\n/{registro['id'].lower()} - {registro['titulo']}"
-        return resposta
-    return texto_sem_resposta(temas) + "\n\nUse /temas para ver todos os assuntos."
+            ids.append(registro["id"])
+        return ", ".join(ids)
+    return "nenhuma orientação"
 
 
 def chamar_telegram(token, metodo, dados):
     try:
-        resposta = requests.post(TELEGRAM_API + token + "/" + metodo, json=dados, timeout=40)
+        resposta = conexao_telegram.post(TELEGRAM_API + token + "/" + metodo, json=dados, timeout=(10, 40))
         return resposta.json()
     except (requests.RequestException, ValueError):
         return {"ok": False}
@@ -747,6 +714,11 @@ def chamar_telegram(token, metodo, dados):
 def iniciar_telegram(base):
     if requests is None:
         print("A biblioteca requests não está instalada. Execute: uv sync (ou pip install requests).")
+        return
+
+    cliente_ia, erro = criar_cliente_ia()
+    if cliente_ia is None:
+        print(f"{erro} O bot do Telegram conversa pela IA e não pode iniciar sem ela.")
         return
 
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
@@ -761,18 +733,12 @@ def iniciar_telegram(base):
         print("Não foi possível conectar ao Telegram. Verifique o token e a internet.")
         return
 
-    cliente_ia, erro = criar_cliente_ia()
-    if cliente_ia is None:
-        print(f"Aviso: {erro} O modo /ia ficará indisponível no bot.")
-
     instrucao = INSTRUCAO_IA + json.dumps(base, ensure_ascii=False, indent=1)
-    indice = montar_indice(base)
-    temas = montar_temas(base)
-    sessoes = {}
+    conversas = {}
     proxima = 0
 
     linha()
-    print(f"Bot @{dados['result']['username']} em funcionamento. Pressione Ctrl+C para parar.")
+    print(f"Bot @{dados['result']['username']} em funcionamento ({MODELO_IA}). Pressione Ctrl+C para parar.")
     linha()
 
     try:
@@ -790,20 +756,17 @@ def iniciar_telegram(base):
                     continue
 
                 chat_id = mensagem["chat"]["id"]
-                if chat_id not in sessoes:
-                    sessoes[chat_id] = {"modo": "busca", "historico": []}
-                sessao = sessoes[chat_id]
+                if chat_id not in conversas:
+                    conversas[chat_id] = []
+                texto = mensagem.get("text", "")
 
-                if sessao["modo"] == "ia":
-                    chamar_telegram(token, "sendChatAction", {"chat_id": chat_id, "action": "typing"})
-
+                chamar_telegram(token, "sendChatAction", {"chat_id": chat_id, "action": "typing"})
                 inicio = time.perf_counter()
-                resposta = responder_telegram(mensagem.get("text", ""), base, indice, temas,
-                                              sessao, cliente_ia, instrucao)
+                resposta = responder_telegram(texto, conversas[chat_id], cliente_ia, instrucao)
                 chamar_telegram(token, "sendMessage", {"chat_id": chat_id, "text": resposta[:4000],
                                                        "disable_web_page_preview": True})
                 tempo = time.perf_counter() - inicio
-                print(f"Mensagem respondida (modo {sessao['modo']}, {tempo:.1f} s)")
+                print(f"Mensagem respondida em {tempo:.1f} s | conferência com a base: {ids_na_base(texto, base)}")
     except KeyboardInterrupt:
         print("\nBot do Telegram parado.")
 

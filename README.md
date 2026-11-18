@@ -136,7 +136,7 @@ Detalhes em [`docs/testes.md`](docs/testes.md). Executar pela opção **3** do m
 
 ## 5. Como executar
 
-Requisito: Python 3.12 ou superior. O assistente principal usa apenas `json`, `os` e `time`. As bibliotecas `anthropic` (chat com IA, opção 7 e `/ia`) e `requests` (bot do Telegram, opção 8) são instaladas com `uv sync`.
+Requisito: Python 3.12 ou superior. O assistente principal usa apenas `json`, `os` e `time`. As bibliotecas `anthropic` (chat com IA, opções 7 e 8) e `requests` (bot do Telegram, opção 8) são instaladas com `uv sync`.
 
 ```bash
 python src/sistema.py
@@ -166,25 +166,22 @@ Execute a partir da pasta raiz do projeto (onde fica este README).
 
 ### Bot do Telegram (opção 8, opcional)
 
-A opção 8 coloca o assistente para funcionar como **bot do Telegram**, para o cidadão usar pelo celular, onde já está acostumado a conversar.
+A opção 8 coloca o assistente para funcionar como **bot do Telegram** (@citizen_assist_ai_bot), para o cidadão usar pelo celular, onde já está acostumado a conversar. No Telegram, a conversa é **sempre pela IA** (Claude Haiku 5.5, com as regras do Modelo C e a base verificada), para que o atendimento seja **humanizado**: acolhedor, com empatia, em linguagem simples e sem comandos para decorar.
 
 1. No Telegram, fale com o **@BotFather**, envie `/newbot`, escolha um nome e copie o **token** gerado.
-2. Defina o token. Se ele não estiver definido, o sistema pede o token ao iniciar.
-   - PowerShell: `$env:TELEGRAM_BOT_TOKEN = "seu-token"`
-   - Bash: `export TELEGRAM_BOT_TOKEN="seu-token"`
-3. (Opcional, para o modo `/ia`) defina também a `ANTHROPIC_API_KEY`.
-4. Rode `uv run src/sistema.py` e escolha a opção **8**. O bot fica ativo até você pressionar **Ctrl+C**.
+2. Defina o token do Telegram e a chave da Anthropic (as duas são obrigatórias para o bot):
+   - PowerShell: `$env:TELEGRAM_BOT_TOKEN = "seu-token"; $env:ANTHROPIC_API_KEY = "sua-chave"`
+   - Bash: `export TELEGRAM_BOT_TOKEN="seu-token" ANTHROPIC_API_KEY="sua-chave"`
+3. Rode `uv run src/sistema.py` e escolha a opção **8**. O bot fica ativo até você pressionar **Ctrl+C**.
 
-**Comandos do bot:**
+**Como é a conversa:**
 
 | Mensagem | O que acontece |
 |---|---|
-| `/start` ou `/ajuda` | Boas-vindas, instruções e avisos de privacidade e de informação não oficial |
-| texto livre (ex.: "caí num golpe do pix") | Busca na base verificada e resposta no formato do Modelo B, com fonte e link |
-| `/temas` | Lista os assuntos de cada tema como comandos clicáveis (`/gol01`, `/con03` etc.) |
-| `/gol01`, `/doc04`... | Abre a orientação, e os **assuntos relacionados aparecem como comandos clicáveis**, o que faz a navegação pelo grafo funcionar com um toque |
-| `/ia` | Ativa o modo de conversa com o Claude Haiku 5.5, com histórico por usuário e conferência com a base em cada resposta |
-| `/busca` | Volta para a busca direta na base verificada e apaga o histórico da IA |
+| `/start` (ao abrir o bot) | A pessoa já é **recebida com uma mensagem de boas-vindas** gerada pela IA: apresentação, temas em que pode ajudar, aviso de que não é canal oficial e pedido para não enviar dados pessoais. Se a IA falhar, o bot envia uma saudação padrão. |
+| qualquer texto ("caí num golpe do pix") | A IA responde com empatia, usando só a base verificada e terminando com a fonte e o link. A conversa mantém o histórico, então perguntas de continuidade funcionam. |
+| mensagem com CPF, telefone ou e-mail | Não é enviada à IA; o bot pede para a pessoa reescrever sem dados pessoais. |
+| figurinha, foto, áudio | O bot avisa que, por enquanto, só lê texto. |
 
 **Rodar o bot sem o menu, em Docker (deploy no Dokploy):** o arquivo `src/bot_telegram.py` inicia direto o bot, e o `Dockerfile` empacota o projeto com `uv`.
 
@@ -195,7 +192,7 @@ docker run -e TELEGRAM_BOT_TOKEN="seu-token" -e ANTHROPIC_API_KEY="sua-chave" ci
 
 No Dokploy, o bot roda como uma *Application* com o build type **Dockerfile**, a partir deste repositório no GitHub. As variáveis `TELEGRAM_BOT_TOKEN` e `ANTHROPIC_API_KEY` são definidas na aba *Environment*. O bot não precisa de porta nem de domínio, porque usa *long polling*.
 
-**Como funciona:** o bot usa a API HTTP do Telegram por *long polling* (`getUpdates`), com a biblioteca `requests`, sem servidor nem webhook. Ele reaproveita as mesmas funções do terminal (`buscar`, `formatar_modelo_b`, `perguntar_ia`), então a lógica e os testes são os mesmos. Cada conversa tem seu próprio modo (busca ou IA) guardado em um dicionário `sessoes` (chat → estado), que fica só na memória. O bot **não grava as mensagens** e bloqueia as que parecem conter CPF, telefone ou e-mail; no terminal aparece apenas "Mensagem respondida (modo, tempo)".
+**Como funciona:** o bot usa a API HTTP do Telegram por *long polling* (`getUpdates`), com a biblioteca `requests`, sem servidor nem webhook, e reaproveita a mesma função do chat do terminal (`perguntar_ia`). O histórico de cada pessoa fica em um dicionário `conversas` (chat → lista de mensagens), só na memória, e é reiniciado a cada `/start`. O bot **não grava as mensagens**. No terminal, aparece apenas o tempo de resposta e a **conferência com a base** (os ids das orientações verificadas que a busca local encontra para a mesma pergunta, ex.: `GOL01`), que permite confrontar as respostas da IA com a base sem expor o conteúdo da conversa.
 
 ### Chat com IA (opção 7, opcional)
 

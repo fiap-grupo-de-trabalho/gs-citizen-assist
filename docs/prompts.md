@@ -52,7 +52,7 @@ O Citizen Assist AI é um projeto acadêmico informativo e não é canal oficial
 Assuntos relacionados: 1 - Caí em um golpe pelo Pix  2 - Cobrança indevida ou abusiva  3 - Registrar boletim de ocorrência online
 ```
 
-## Modelo C: chat com IA (Claude Haiku 5.5, opção 7)
+## Modelo C: chat com IA (Claude Haiku 5.5, opção 7 e bot do Telegram)
 
 O Modelo C leva as regras do Modelo B para um LLM de verdade. O prompt de sistema (constante `INSTRUCAO_IA` em `src/sistema.py`) é enviado ao modelo `claude-haiku-5-5` junto com a base verificada inteira em JSON. A base cabe no contexto e, por isso, não é preciso escolher trechos antes de enviar.
 
@@ -69,11 +69,16 @@ Regras:
 - Quando a orientação tiver "confirmar": true, avise que regras e prazos podem mudar e devem ser confirmados no canal oficial.
 - Nunca peça CPF, senhas, telefone, endereço ou outros dados pessoais.
 - Nunca diga que é um canal oficial de órgão público, banco ou empresa.
-- Responda em português do Brasil, em até 6 frases curtas, sem tabelas.
+- Converse de forma acolhedora e humana, como uma pessoa paciente ajudando alguém que pode estar
+  nervoso ou com pouca familiaridade com tecnologia. Mostre empatia quando a pessoa relatar um problema.
+- Responda em português do Brasil, em até 6 frases curtas, em texto simples, sem tabelas e sem
+  formatação markdown (não use asteriscos, cerquilhas ou listas com marcadores).
 
 BASE VERIFICADA (JSON):
 [ ... conteúdo de data/base_conhecimento.json ... ]
 ```
+
+No Telegram, a primeira mensagem também é gerada pela IA: ao receber o `/start`, o bot envia ao modelo um pedido de saudação (constante `PEDIDO_SAUDACAO`) para que a pessoa seja recebida com boas-vindas, a apresentação do assistente e os avisos de privacidade e de canal não oficial. Se a API falhar, o bot usa uma saudação fixa (`SAUDACAO_PADRAO`).
 
 Técnicas usadas (Fase 5): **persona** (papel do assistente), **restrições explícitas**, **formato de saída** (linha de fonte obrigatória) e **contexto fornecido no prompt** (a base verificada), que é a ideia de RAG (geração aumentada por recuperação). Por ser um chat simples, o modelo roda com esforço baixo (`effort: low`).
 
