@@ -136,7 +136,7 @@ Detalhes em [`docs/testes.md`](docs/testes.md). Executar pela opção **3** do m
 
 ## 5. Como executar
 
-Requisito: Python 3.12 ou superior. O assistente principal usa apenas `json` e `time`; a biblioteca `anthropic` só é necessária para o chat com IA (opção 7).
+Requisito: Python 3.12 ou superior. O assistente principal usa apenas `json`, `os` e `time`. As bibliotecas `anthropic` (chat com IA, opção 7 e `/ia`) e `requests` (bot do Telegram, opção 8) são instaladas com `uv sync`.
 
 ```bash
 python src/sistema.py
@@ -160,8 +160,42 @@ Execute a partir da pasta raiz do projeto (onde fica este README).
 5 - Adicionar orientação à base
 6 - Trocar modelo de resposta (atual: B)
 7 - Conversar com a IA (chat com claude-haiku-5-5)
+8 - Iniciar o bot do Telegram
 0 - Sair
 ```
+
+### Bot do Telegram (opção 8, opcional)
+
+A opção 8 coloca o assistente para funcionar como **bot do Telegram**, para o cidadão usar pelo celular, onde já está acostumado a conversar.
+
+1. No Telegram, fale com o **@BotFather**, envie `/newbot`, escolha um nome e copie o **token** gerado.
+2. Defina o token. Se ele não estiver definido, o sistema pede o token ao iniciar.
+   - PowerShell: `$env:TELEGRAM_BOT_TOKEN = "seu-token"`
+   - Bash: `export TELEGRAM_BOT_TOKEN="seu-token"`
+3. (Opcional, para o modo `/ia`) defina também a `ANTHROPIC_API_KEY`.
+4. Rode `uv run src/sistema.py` e escolha a opção **8**. O bot fica ativo até você pressionar **Ctrl+C**.
+
+**Comandos do bot:**
+
+| Mensagem | O que acontece |
+|---|---|
+| `/start` ou `/ajuda` | Boas-vindas, instruções e avisos de privacidade e de informação não oficial |
+| texto livre (ex.: "caí num golpe do pix") | Busca na base verificada e resposta no formato do Modelo B, com fonte e link |
+| `/temas` | Lista os assuntos de cada tema como comandos clicáveis (`/gol01`, `/con03` etc.) |
+| `/gol01`, `/doc04`... | Abre a orientação, e os **assuntos relacionados aparecem como comandos clicáveis**, o que faz a navegação pelo grafo funcionar com um toque |
+| `/ia` | Ativa o modo de conversa com o Claude Haiku 5.5, com histórico por usuário e conferência com a base em cada resposta |
+| `/busca` | Volta para a busca direta na base verificada e apaga o histórico da IA |
+
+**Rodar o bot sem o menu, em Docker (deploy no Dokploy):** o arquivo `src/bot_telegram.py` inicia direto o bot, e o `Dockerfile` empacota o projeto com `uv`.
+
+```bash
+docker build -t citizen-assist-bot .
+docker run -e TELEGRAM_BOT_TOKEN="seu-token" -e ANTHROPIC_API_KEY="sua-chave" citizen-assist-bot
+```
+
+No Dokploy, o bot roda como uma *Application* com o build type **Dockerfile**, a partir deste repositório no GitHub. As variáveis `TELEGRAM_BOT_TOKEN` e `ANTHROPIC_API_KEY` são definidas na aba *Environment*. O bot não precisa de porta nem de domínio, porque usa *long polling*.
+
+**Como funciona:** o bot usa a API HTTP do Telegram por *long polling* (`getUpdates`), com a biblioteca `requests`, sem servidor nem webhook. Ele reaproveita as mesmas funções do terminal (`buscar`, `formatar_modelo_b`, `perguntar_ia`), então a lógica e os testes são os mesmos. Cada conversa tem seu próprio modo (busca ou IA) guardado em um dicionário `sessoes` (chat → estado), que fica só na memória. O bot **não grava as mensagens** e bloqueia as que parecem conter CPF, telefone ou e-mail; no terminal aparece apenas "Mensagem respondida (modo, tempo)".
 
 ### Chat com IA (opção 7, opcional)
 
@@ -268,4 +302,4 @@ O Citizen Assist AI mostra que, com fundamentos de programação (listas, dicion
 
 **Limitações:** a base é pequena (16 orientações) e precisa de revisão periódica, porque regras como as do MED do Pix mudam; a busca depende de palavras-chave e não entende sinônimos que não foram cadastrados; o boletim de ocorrência online varia de estado para estado; e os testes foram escritos pela própria equipe.
 
-**Melhorias futuras:** sinônimos e tolerância a erros de digitação; tratamento de perguntas genéricas; aviso automático quando a data de verificação passar de 6 meses; versão por WhatsApp ou por voz para ampliar a acessibilidade; e uma avaliação automática das respostas do chat com IA (verificar se o link citado é o mesmo da orientação encontrada pela busca).
+**Melhorias futuras:** sinônimos e tolerância a erros de digitação; tratamento de perguntas genéricas; aviso automático quando a data de verificação passar de 6 meses; mensagens de voz no bot do Telegram e versão por WhatsApp para ampliar a acessibilidade; e uma avaliação automática das respostas do chat com IA (verificar se o link citado é o mesmo da orientação encontrada pela busca).

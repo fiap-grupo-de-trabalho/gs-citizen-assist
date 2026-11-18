@@ -1,10 +1,18 @@
 import json
+import os
 import time
 
 try:
     import anthropic
 except ImportError:
     anthropic = None
+
+try:
+    import requests
+except ImportError:
+    requests = None
+
+TELEGRAM_API = "https://api.telegram.org/bot"
 
 MODELO_IA = "claude-haiku-5-5"
 
@@ -262,13 +270,14 @@ def mostrar_resposta(registro, indice, modelo):
         registro = indice[relacionados[escolha - 1]]
 
 
-def sugerir_alternativas(temas):
-    print("Não encontrei uma orientação confiável na base para essa pergunta.")
-    print("Prefiro não inventar uma resposta. Você pode:")
-    print(f"{margem}- usar palavras como: pix, golpe, boleto, whatsapp, garantia, "
-          f"arrependimento, cobrança, documento, boletim de ocorrência;")
-    print(f"{margem}- escolher um dos temas disponíveis: {', '.join(temas.keys())};")
-    print(f"{margem}- procurar diretamente o canal oficial do órgão ou da empresa.")
+def texto_sem_resposta(temas):
+    texto = "Não encontrei uma orientação confiável na base para essa pergunta.\n"
+    texto += "Prefiro não inventar uma resposta. Você pode:\n"
+    texto += (f"{margem}- usar palavras como: pix, golpe, boleto, whatsapp, garantia, "
+              f"arrependimento, cobrança, documento, boletim de ocorrência;\n")
+    texto += f"{margem}- escolher um dos temas disponíveis: {', '.join(temas.keys())};\n"
+    texto += f"{margem}- procurar diretamente o canal oficial do órgão ou da empresa."
+    return texto
 
 
 def parece_dado_pessoal(texto):
@@ -293,7 +302,7 @@ def consultar_pergunta(base, indice, temas, modelo):
     if situacao == "vazia":
         print("Você não digitou nenhuma pergunta. Tente, por exemplo: 'caí num golpe do pix'.")
     elif situacao == "sem_resposta":
-        sugerir_alternativas(temas)
+        print(texto_sem_resposta(temas))
     elif situacao == "ambigua":
         print("Sua pergunta combina com mais de um assunto. Qual deles você procura?")
         for numero, registro in enumerate(encontrados, start=1):
@@ -547,15 +556,16 @@ def trocar_modelo(modelo):
     return modelo
 
 
-def conferir_com_base(pergunta, base):
+def texto_conferencia(pergunta, base):
     situacao, encontrados = buscar(pergunta, base)
-    print("Conferência com a base verificada:")
+    texto = "Conferência com a base verificada:"
     if situacao == "ok" or situacao == "ambigua":
         for registro in encontrados:
-            print(f"{margem}{registro['id']} - {registro['titulo']}: {registro['link']}")
+            texto += f"\n{margem}{registro['id']} - {registro['titulo']}: {registro['link']}"
     else:
-        print(f"{margem}Nenhuma orientação da base corresponde a essa pergunta. "
-              f"Confirme a informação no canal oficial.")
+        texto += (f"\n{margem}Nenhuma orientação da base corresponde a essa pergunta. "
+                  f"Confirme a informação no canal oficial.")
+    return texto
 
 
 def ler_texto_resposta(resposta):
@@ -566,15 +576,54 @@ def ler_texto_resposta(resposta):
     return texto
 
 
-def conversar_com_ia(base):
+def criar_cliente_ia():
     if anthropic is None:
-        print("A biblioteca anthropic não está instalada. Execute: uv sync (ou pip install anthropic).")
-        return
-
+        return None, "A biblioteca anthropic não está instalada. Execute: uv sync (ou pip install anthropic)."
     try:
-        cliente = anthropic.Anthropic()
+        return anthropic.Anthropic(), ""
     except anthropic.AnthropicError:
-        print("Credencial da Anthropic não encontrada. Defina a variável ANTHROPIC_API_KEY.")
+        return None, "Credencial da Anthropic não encontrada. Defina a variável ANTHROPIC_API_KEY."
+
+
+def perguntar_ia(cliente, instrucao, historico, mensagem):
+    historico.append({"role": "user", "content": mensagem})
+    try:
+        resposta = cliente.messages.create(
+            model=MODELO_IA,
+            max_tokens=4096,
+            system=instrucao,
+            cache_control={"type": "ephemeral"},
+            output_config={"effort": "low"},
+            messages=historico,
+        )
+    except anthropic.AuthenticationError:
+        historico.pop()
+        return "Chave da API inválida ou ausente. Defina a variável ANTHROPIC_API_KEY."
+    except anthropic.RateLimitError:
+        historico.pop()
+        return "Muitas requisições no momento. Aguarde um pouco e tente de novo."
+    except anthropic.APIConnectionError:
+        historico.pop()
+        return "Sem conexão com a API da Anthropic. Verifique a internet."
+    except anthropic.APIStatusError as erro:
+        historico.pop()
+        return f"Erro da API ({erro.status_code}). Tente novamente mais tarde."
+    except (anthropic.AnthropicError, TypeError):
+        historico.pop()
+        return "Credencial da Anthropic não encontrada. Defina a variável ANTHROPIC_API_KEY."
+
+    if resposta.stop_reason == "refusal":
+        historico.pop()
+        return "Não posso ajudar com esse pedido. Tente reformular a pergunta."
+
+    historico.append({"role": "assistant", "content": resposta.content})
+    return ler_texto_resposta(resposta)
+
+
+def conversar_com_ia(base):
+    cliente, erro = criar_cliente_ia()
+    if cliente is None:
+        print(erro)
         return
 
     instrucao = INSTRUCAO_IA + json.dumps(base, ensure_ascii=False, indent=1)
@@ -598,49 +647,165 @@ def conversar_com_ia(base):
             print("A mensagem não foi enviada. Reescreva sem essas informações.")
             continue
 
-        historico.append({"role": "user", "content": mensagem})
         inicio = time.perf_counter()
-        try:
-            resposta = cliente.messages.create(
-                model=MODELO_IA,
-                max_tokens=4096,
-                system=instrucao,
-                cache_control={"type": "ephemeral"},
-                output_config={"effort": "low"},
-                messages=historico,
-            )
-        except anthropic.AuthenticationError:
-            print("Chave da API inválida ou ausente. Defina a variável ANTHROPIC_API_KEY.")
-            historico.pop()
-            return
-        except anthropic.RateLimitError:
-            print("Muitas requisições no momento. Aguarde um pouco e tente de novo.")
-            historico.pop()
-            continue
-        except anthropic.APIConnectionError:
-            print("Sem conexão com a API da Anthropic. Verifique a internet.")
-            historico.pop()
-            continue
-        except anthropic.APIStatusError as erro:
-            print(f"Erro da API ({erro.status_code}). Tente novamente mais tarde.")
-            historico.pop()
-            continue
-        except (anthropic.AnthropicError, TypeError):
-            print("Credencial da Anthropic não encontrada. Defina a variável ANTHROPIC_API_KEY.")
-            historico.pop()
-            return
+        resposta = perguntar_ia(cliente, instrucao, historico, mensagem)
         tempo = time.perf_counter() - inicio
-
-        if resposta.stop_reason == "refusal":
-            print("Assistente: não posso ajudar com esse pedido. Tente reformular a pergunta.")
-            historico.pop()
-            continue
-
-        historico.append({"role": "assistant", "content": resposta.content})
-        print(f"Assistente: {ler_texto_resposta(resposta)}")
+        print(f"Assistente: {resposta}")
         print(f"(resposta em {tempo:.1f} s)")
-        conferir_com_base(mensagem, base)
+        print(texto_conferencia(mensagem, base))
         linha()
+
+
+BOAS_VINDAS = """Olá! Eu sou o Citizen Assist AI.
+Oriento sobre golpes digitais, direitos do consumidor e documentos, sempre com a fonte oficial.
+
+Como usar:
+- Escreva sua dúvida, por exemplo: caí num golpe do pix
+- /temas mostra todos os assuntos
+- /ia conversa com a inteligência artificial (respostas baseadas na mesma base verificada)
+- /busca volta para a busca direta na base verificada
+- /ajuda mostra esta mensagem
+
+Não envie CPF, senhas, telefone ou outros dados pessoais.
+""" + AVISO_NAO_OFICIAL
+
+
+def texto_relacionados(registro, indice):
+    if len(registro["relacionados"]) == 0:
+        return ""
+    texto = "\n\nAssuntos relacionados (toque para abrir):"
+    for codigo in registro["relacionados"]:
+        texto += f"\n/{codigo.lower()} - {indice[codigo]['titulo']}"
+    return texto
+
+
+def texto_temas(temas):
+    texto = "Assuntos disponíveis (toque para abrir):"
+    for nome in temas:
+        texto += f"\n\n{nome}:"
+        for registro in temas[nome]:
+            texto += f"\n/{registro['id'].lower()} - {registro['titulo']}"
+    return texto
+
+
+def responder_telegram(texto, base, indice, temas, sessao, cliente_ia, instrucao):
+    texto = texto.strip()
+    if texto == "":
+        return "Envie sua dúvida em texto. Exemplo: caí num golpe do pix"
+
+    if texto.startswith("/"):
+        comando = texto.split()[0].split("@")[0].lower()
+        if comando == "/start" or comando == "/ajuda":
+            return BOAS_VINDAS
+        if comando == "/temas":
+            return texto_temas(temas)
+        if comando == "/busca":
+            sessao["modo"] = "busca"
+            sessao["historico"] = []
+            return "Modo busca ativado: respondo direto com a base verificada."
+        if comando == "/ia":
+            if cliente_ia is None:
+                return "O chat com IA não está disponível agora. Use a busca direta escrevendo sua dúvida."
+            sessao["modo"] = "ia"
+            sessao["historico"] = []
+            return (f"Modo IA ativado ({MODELO_IA}). Pode perguntar à vontade; "
+                    f"as mensagens são enviadas à API da Anthropic. Use /busca para sair.")
+        codigo = comando[1:].upper()
+        if codigo in indice:
+            registro = indice[codigo]
+            return formatar_modelo_b(registro) + texto_relacionados(registro, indice)
+        return "Comando não reconhecido. Use /ajuda para ver as opções."
+
+    if parece_dado_pessoal(texto):
+        return ("Por segurança, não envie CPF, telefone, e-mail ou outros dados pessoais. "
+                "Reescreva a pergunta sem essas informações.")
+
+    if sessao["modo"] == "ia":
+        resposta = perguntar_ia(cliente_ia, instrucao, sessao["historico"], texto)
+        return resposta + "\n\n" + texto_conferencia(texto, base)
+
+    situacao, encontrados = buscar(texto, base)
+    if situacao == "ok":
+        registro = encontrados[0]
+        return formatar_modelo_b(registro) + texto_relacionados(registro, indice)
+    if situacao == "ambigua":
+        resposta = "Sua pergunta combina com mais de um assunto. Qual deles você procura?"
+        for registro in encontrados:
+            resposta += f"\n/{registro['id'].lower()} - {registro['titulo']}"
+        return resposta
+    return texto_sem_resposta(temas) + "\n\nUse /temas para ver todos os assuntos."
+
+
+def chamar_telegram(token, metodo, dados):
+    try:
+        resposta = requests.post(TELEGRAM_API + token + "/" + metodo, json=dados, timeout=40)
+        return resposta.json()
+    except (requests.RequestException, ValueError):
+        return {"ok": False}
+
+
+def iniciar_telegram(base):
+    if requests is None:
+        print("A biblioteca requests não está instalada. Execute: uv sync (ou pip install requests).")
+        return
+
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    if token == "":
+        token = input("Token do bot (gerado no @BotFather): ").strip()
+    if token == "":
+        print("Token não informado.")
+        return
+
+    dados = chamar_telegram(token, "getMe", {})
+    if not dados.get("ok"):
+        print("Não foi possível conectar ao Telegram. Verifique o token e a internet.")
+        return
+
+    cliente_ia, erro = criar_cliente_ia()
+    if cliente_ia is None:
+        print(f"Aviso: {erro} O modo /ia ficará indisponível no bot.")
+
+    instrucao = INSTRUCAO_IA + json.dumps(base, ensure_ascii=False, indent=1)
+    indice = montar_indice(base)
+    temas = montar_temas(base)
+    sessoes = {}
+    proxima = 0
+
+    linha()
+    print(f"Bot @{dados['result']['username']} em funcionamento. Pressione Ctrl+C para parar.")
+    linha()
+
+    try:
+        while True:
+            dados = chamar_telegram(token, "getUpdates", {"offset": proxima, "timeout": 30})
+            if not dados.get("ok"):
+                print("Falha ao buscar mensagens. Nova tentativa em 5 segundos.")
+                time.sleep(5)
+                continue
+
+            for atualizacao in dados["result"]:
+                proxima = atualizacao["update_id"] + 1
+                mensagem = atualizacao.get("message")
+                if mensagem is None:
+                    continue
+
+                chat_id = mensagem["chat"]["id"]
+                if chat_id not in sessoes:
+                    sessoes[chat_id] = {"modo": "busca", "historico": []}
+                sessao = sessoes[chat_id]
+
+                if sessao["modo"] == "ia":
+                    chamar_telegram(token, "sendChatAction", {"chat_id": chat_id, "action": "typing"})
+
+                inicio = time.perf_counter()
+                resposta = responder_telegram(mensagem.get("text", ""), base, indice, temas,
+                                              sessao, cliente_ia, instrucao)
+                chamar_telegram(token, "sendMessage", {"chat_id": chat_id, "text": resposta[:4000],
+                                                       "disable_web_page_preview": True})
+                tempo = time.perf_counter() - inicio
+                print(f"Mensagem respondida (modo {sessao['modo']}, {tempo:.1f} s)")
+    except KeyboardInterrupt:
+        print("\nBot do Telegram parado.")
 
 
 def menu():
@@ -667,6 +832,7 @@ def menu():
         print("5 - Adicionar orientação à base")
         print(f"6 - Trocar modelo de resposta (atual: {modelo})")
         print(f"7 - Conversar com a IA (chat com {MODELO_IA})")
+        print("8 - Iniciar o bot do Telegram")
         print("0 - Sair")
         opcao = input("Escolha uma opção: ").strip()
 
@@ -684,13 +850,16 @@ def menu():
             modelo = trocar_modelo(modelo)
         elif opcao == "7":
             conversar_com_ia(base)
+        elif opcao == "8":
+            iniciar_telegram(base)
         elif opcao == "0":
             print("Até logo! Em caso de dúvida, procure sempre o canal oficial.")
             break
         elif opcao == "":
             print("Você não escolheu nenhuma opção.")
         else:
-            print("Opção inexistente. Digite um número de 0 a 7.")
+            print("Opção inexistente. Digite um número de 0 a 8.")
 
 
-menu()
+if __name__ == "__main__":
+    menu()
