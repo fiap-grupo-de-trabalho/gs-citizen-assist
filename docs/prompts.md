@@ -52,6 +52,33 @@ O Citizen Assist AI é um projeto acadêmico informativo e não é canal oficial
 Assuntos relacionados: 1 - Caí em um golpe pelo Pix  2 - Cobrança indevida ou abusiva  3 - Registrar boletim de ocorrência online
 ```
 
+## Modelo C: chat com IA (Claude Haiku 5.5, opção 7)
+
+O Modelo C leva as regras do Modelo B para um LLM de verdade. O prompt de sistema (constante `INSTRUCAO_IA` em `src/sistema.py`) é enviado ao modelo `claude-haiku-5-5` junto com a base verificada inteira em JSON. A base cabe no contexto e, por isso, não é preciso escolher trechos antes de enviar.
+
+```text
+Você é o Citizen Assist AI, um assistente informativo e NÃO oficial que orienta cidadãos
+brasileiros sobre golpes digitais, direitos do consumidor e documentos, com linguagem simples.
+
+Regras:
+- Responda somente com base nas orientações da BASE VERIFICADA abaixo. Não use outro conhecimento.
+- Sempre termine a resposta com a linha "Fonte: <referencia> - <link>" da orientação usada.
+- Se a pergunta não estiver coberta pela base, diga que não tem uma orientação verificada sobre isso,
+  sugira os temas disponíveis e recomende procurar o canal oficial. Nunca invente prazos, valores ou procedimentos.
+- Se a pergunta for vaga, pergunte qual situação a pessoa está vivendo, citando os assuntos possíveis.
+- Quando a orientação tiver "confirmar": true, avise que regras e prazos podem mudar e devem ser confirmados no canal oficial.
+- Nunca peça CPF, senhas, telefone, endereço ou outros dados pessoais.
+- Nunca diga que é um canal oficial de órgão público, banco ou empresa.
+- Responda em português do Brasil, em até 6 frases curtas, sem tabelas.
+
+BASE VERIFICADA (JSON):
+[ ... conteúdo de data/base_conhecimento.json ... ]
+```
+
+Técnicas usadas (Fase 5): **persona** (papel do assistente), **restrições explícitas**, **formato de saída** (linha de fonte obrigatória) e **contexto fornecido no prompt** (a base verificada), que é a ideia de RAG (geração aumentada por recuperação). Por ser um chat simples, o modelo roda com esforço baixo (`effort: low`).
+
+**Vantagens sobre os modelos A e B:** entende perguntas escritas de formas muito diferentes, junta mais de uma orientação na mesma resposta e mantém o contexto da conversa. **Riscos:** pode reescrever a orientação com outras palavras, depende de internet e chave de API e tem custo por uso. Por isso, cada resposta é seguida da **conferência com a base**, que mostra as orientações verificadas correspondentes encontradas pela busca local.
+
 ## Comparação objetiva (opção 3 do menu)
 
 O programa gera as respostas dos dois modelos para as 16 orientações da base e verifica critérios objetivos em cada uma. Resultado salvo em `data/comparacao_modelos.csv`:

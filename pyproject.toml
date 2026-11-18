@@ -11,4 +11,6 @@ authors = [
     { name = "Matheus Fuchelberguer Neves", email = "fuchelberguerneves@gmail.com" },
     { name = "Rodrigo Gomes Dias", email = "rodrigogmdias@gmail.com" },
 ]
-dependencies = []
+dependencies = [
+    "anthropic>=2.10.0",
+]

@@ -1,6 +1,30 @@
 import json
 import time
 
+try:
+    import anthropic
+except ImportError:
+    anthropic = None
+
+MODELO_IA = "claude-haiku-5-5"
+
+INSTRUCAO_IA = """Você é o Citizen Assist AI, um assistente informativo e NÃO oficial que orienta cidadãos \
+brasileiros sobre golpes digitais, direitos do consumidor e documentos, com linguagem simples.
+
+Regras:
+- Responda somente com base nas orientações da BASE VERIFICADA abaixo. Não use outro conhecimento.
+- Sempre termine a resposta com a linha "Fonte: <referencia> - <link>" da orientação usada.
+- Se a pergunta não estiver coberta pela base, diga que não tem uma orientação verificada sobre isso, \
+sugira os temas disponíveis e recomende procurar o canal oficial. Nunca invente prazos, valores ou procedimentos.
+- Se a pergunta for vaga, pergunte qual situação a pessoa está vivendo, citando os assuntos possíveis.
+- Quando a orientação tiver "confirmar": true, avise que regras e prazos podem mudar e devem ser confirmados no canal oficial.
+- Nunca peça CPF, senhas, telefone, endereço ou outros dados pessoais.
+- Nunca diga que é um canal oficial de órgão público, banco ou empresa.
+- Responda em português do Brasil, em até 6 frases curtas, sem tabelas.
+
+BASE VERIFICADA (JSON):
+"""
+
 ARQUIVO_BASE = "data/base_conhecimento.json"
 ARQUIVO_TESTES = "data/perguntas_teste.json"
 ARQUIVO_RESULTADOS = "data/resultados_testes.csv"
@@ -523,6 +547,102 @@ def trocar_modelo(modelo):
     return modelo
 
 
+def conferir_com_base(pergunta, base):
+    situacao, encontrados = buscar(pergunta, base)
+    print("Conferência com a base verificada:")
+    if situacao == "ok" or situacao == "ambigua":
+        for registro in encontrados:
+            print(f"{margem}{registro['id']} - {registro['titulo']}: {registro['link']}")
+    else:
+        print(f"{margem}Nenhuma orientação da base corresponde a essa pergunta. "
+              f"Confirme a informação no canal oficial.")
+
+
+def ler_texto_resposta(resposta):
+    texto = ""
+    for bloco in resposta.content:
+        if bloco.type == "text":
+            texto += bloco.text
+    return texto
+
+
+def conversar_com_ia(base):
+    if anthropic is None:
+        print("A biblioteca anthropic não está instalada. Execute: uv sync (ou pip install anthropic).")
+        return
+
+    try:
+        cliente = anthropic.Anthropic()
+    except anthropic.AnthropicError:
+        print("Credencial da Anthropic não encontrada. Defina a variável ANTHROPIC_API_KEY.")
+        return
+
+    instrucao = INSTRUCAO_IA + json.dumps(base, ensure_ascii=False, indent=1)
+    historico = []
+
+    linha()
+    print(f"CHAT COM IA ({MODELO_IA}) - respostas geradas a partir da base verificada.")
+    print("As mensagens são enviadas à API da Anthropic. Não digite dados pessoais.")
+    print("Digite 'sair' para voltar ao menu.")
+    linha()
+
+    while True:
+        mensagem = input("Você: ").strip()
+        if mensagem.lower() == "sair":
+            return
+        if mensagem == "":
+            print("Digite uma pergunta ou 'sair' para voltar.")
+            continue
+        if parece_dado_pessoal(mensagem):
+            print("Por segurança, não digite CPF, telefone, e-mail ou outros dados pessoais.")
+            print("A mensagem não foi enviada. Reescreva sem essas informações.")
+            continue
+
+        historico.append({"role": "user", "content": mensagem})
+        inicio = time.perf_counter()
+        try:
+            resposta = cliente.messages.create(
+                model=MODELO_IA,
+                max_tokens=4096,
+                system=instrucao,
+                cache_control={"type": "ephemeral"},
+                output_config={"effort": "low"},
+                messages=historico,
+            )
+        except anthropic.AuthenticationError:
+            print("Chave da API inválida ou ausente. Defina a variável ANTHROPIC_API_KEY.")
+            historico.pop()
+            return
+        except anthropic.RateLimitError:
+            print("Muitas requisições no momento. Aguarde um pouco e tente de novo.")
+            historico.pop()
+            continue
+        except anthropic.APIConnectionError:
+            print("Sem conexão com a API da Anthropic. Verifique a internet.")
+            historico.pop()
+            continue
+        except anthropic.APIStatusError as erro:
+            print(f"Erro da API ({erro.status_code}). Tente novamente mais tarde.")
+            historico.pop()
+            continue
+        except (anthropic.AnthropicError, TypeError):
+            print("Credencial da Anthropic não encontrada. Defina a variável ANTHROPIC_API_KEY.")
+            historico.pop()
+            return
+        tempo = time.perf_counter() - inicio
+
+        if resposta.stop_reason == "refusal":
+            print("Assistente: não posso ajudar com esse pedido. Tente reformular a pergunta.")
+            historico.pop()
+            continue
+
+        historico.append({"role": "assistant", "content": resposta.content})
+        print(f"Assistente: {ler_texto_resposta(resposta)}")
+        print(f"(resposta em {tempo:.1f} s)")
+        conferir_com_base(mensagem, base)
+        linha()
+
+
 def menu():
     base = carregar_base()
     modelo = "B"
@@ -546,6 +666,7 @@ def menu():
         print("4 - Avaliar a facilidade de uso")
         print("5 - Adicionar orientação à base")
         print(f"6 - Trocar modelo de resposta (atual: {modelo})")
+        print(f"7 - Conversar com a IA (chat com {MODELO_IA})")
         print("0 - Sair")
         opcao = input("Escolha uma opção: ").strip()
 
@@ -561,13 +682,15 @@ def menu():
             base = adicionar_orientacao(base)
         elif opcao == "6":
             modelo = trocar_modelo(modelo)
+        elif opcao == "7":
+            conversar_com_ia(base)
         elif opcao == "0":
             print("Até logo! Em caso de dúvida, procure sempre o canal oficial.")
             break
         elif opcao == "":
             print("Você não escolheu nenhuma opção.")
         else:
-            print("Opção inexistente. Digite um número de 0 a 6.")
+            print("Opção inexistente. Digite um número de 0 a 7.")
 
 
 menu()

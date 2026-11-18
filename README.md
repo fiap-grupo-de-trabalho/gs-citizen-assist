@@ -116,6 +116,7 @@ Depois de cada resposta, o assistente mostra os vizinhos do grafo como **"Assunt
 - **Dois modelos de instrução de resposta**, detalhados em [`docs/prompts.md`](docs/prompts.md):
   - **Modelo A (direto):** orientação + nome da fonte;
   - **Modelo B (estruturado, padrão):** persona de assistente informativo não oficial, formato fixo (Assunto, O que fazer, Fonte com link, Data de verificação, Avisos) e regras explícitas (citar a fonte, não inventar, não pedir dados pessoais).
+  - **Modelo C (chat com IA, opção 7):** as regras do Modelo B aplicadas como prompt de sistema para o Claude Haiku 5.5, junto com a base verificada.
 - **Comparação:** o Modelo B atende 100% dos critérios de transparência (link, data, assunto, aviso não oficial), contra 0% do Modelo A, ao custo de respostas cerca de 66% mais longas. Por isso ele é o padrão, e o modelo pode ser trocado pela opção 6 do menu.
 - **Avisos:** os 6 assuntos marcados com `confirmar: true` mostram "Confirme no canal oficial antes de agir", e toda resposta do Modelo B informa que o assistente não é canal oficial.
 - **Limitações tratadas:** entrada vazia, opção de menu inexistente ou em branco, pergunta sem correspondência (com sugestão de temas e palavras), consulta ambígua e base inválida.
@@ -135,7 +136,7 @@ Detalhes em [`docs/testes.md`](docs/testes.md). Executar pela opção **3** do m
 
 ## 5. Como executar
 
-Requisito: Python 3.10 ou superior. Não há bibliotecas externas (usa apenas `json` e `time`).
+Requisito: Python 3.12 ou superior. O assistente principal usa apenas `json` e `time`; a biblioteca `anthropic` só é necessária para o chat com IA (opção 7).
 
 ```bash
 python src/sistema.py
@@ -158,8 +159,27 @@ Execute a partir da pasta raiz do projeto (onde fica este README).
 4 - Avaliar a facilidade de uso
 5 - Adicionar orientação à base
 6 - Trocar modelo de resposta (atual: B)
+7 - Conversar com a IA (chat com claude-haiku-5-5)
 0 - Sair
 ```
+
+### Chat com IA (opção 7, opcional)
+
+A opção 7 abre um chat com o modelo **Claude Haiku 5.5** (`claude-haiku-5-5`), da Anthropic. As opções 1 a 6 funcionam sem internet e sem chave; só o chat precisa delas.
+
+1. Instale as dependências: `uv sync` (ou `pip install anthropic`).
+2. Defina a chave da API:
+   - PowerShell: `$env:ANTHROPIC_API_KEY = "sua-chave"`
+   - Bash: `export ANTHROPIC_API_KEY="sua-chave"`
+3. Rode `uv run src/sistema.py`, escolha a opção **7** e digite `sair` para voltar ao menu.
+
+**Como a IA é limitada à base verificada (RAG simples):**
+
+- A instrução do sistema leva a base `data/base_conhecimento.json` inteira e as regras do **Modelo C** (ver [`docs/prompts.md`](docs/prompts.md)): responder **somente** com a base, terminar com "Fonte: ... - link", dizer quando não sabe, não pedir dados pessoais e não se apresentar como canal oficial.
+- A conversa mantém o histórico, então o usuário pode fazer perguntas de continuidade ("e se o banco não resolver?").
+- **Conferência com a base:** depois de cada resposta da IA, o sistema roda a busca por palavras-chave na mesma pergunta e mostra quais orientações verificadas (id, título e link) correspondem a ela, ou avisa que nenhuma corresponde. Assim a resposta gerada é sempre confrontada com a base verificada, como pede o enunciado.
+- **Privacidade:** mensagens que parecem conter CPF, telefone ou e-mail **não são enviadas** à API. O chat avisa que as mensagens vão para a Anthropic.
+- **Erros tratados:** biblioteca não instalada, chave ausente ou inválida, limite de requisições, falta de conexão, erro da API e recusa do modelo.
 
 ## 6. Exemplos de perguntas, respostas e entradas inválidas
 
@@ -220,7 +240,7 @@ Reescreva a pergunta sem essas informações.
 ## 7. Clareza, acessibilidade, privacidade e informação não oficial
 
 - **Clareza e acessibilidade:** orientações em linguagem simples, frases curtas e passos concretos; menu numerado (só exige digitar números); interface de texto, que funciona em qualquer computador e é compatível com leitores de tela.
-- **Privacidade:** o assistente **não pede nenhum dado pessoal**, não guarda as perguntas e bloqueia perguntas que parecem conter CPF, telefone ou e-mail (8 ou mais dígitos ou "@"). A avaliação de uso guarda apenas a nota e um comentário sem dados pessoais.
+- **Privacidade:** o assistente **não pede nenhum dado pessoal**, não guarda as perguntas (no chat com IA, as mensagens são enviadas à API da Anthropic, e o usuário é avisado disso) e bloqueia perguntas que parecem conter CPF, telefone ou e-mail (8 ou mais dígitos ou "@"). A avaliação de uso guarda apenas a nota e um comentário sem dados pessoais.
 - **Informação não oficial:** toda resposta cita a fonte oficial com link e data de verificação, informa que o assistente não é canal oficial e, nos assuntos com prazos que mudam, pede confirmação no canal oficial. O assistente nunca promete integração com órgãos públicos.
 
 ## 8. Estrutura do repositório
@@ -248,4 +268,4 @@ O Citizen Assist AI mostra que, com fundamentos de programação (listas, dicion
 
 **Limitações:** a base é pequena (16 orientações) e precisa de revisão periódica, porque regras como as do MED do Pix mudam; a busca depende de palavras-chave e não entende sinônimos que não foram cadastrados; o boletim de ocorrência online varia de estado para estado; e os testes foram escritos pela própria equipe.
 
-**Melhorias futuras:** sinônimos e tolerância a erros de digitação; tratamento de perguntas genéricas; aviso automático quando a data de verificação passar de 6 meses; versão por WhatsApp ou por voz para ampliar a acessibilidade; e uso de um LLM restrito à base verificada (recuperação + Modelo B), com as respostas comparadas à base.
+**Melhorias futuras:** sinônimos e tolerância a erros de digitação; tratamento de perguntas genéricas; aviso automático quando a data de verificação passar de 6 meses; versão por WhatsApp ou por voz para ampliar a acessibilidade; e uma avaliação automática das respostas do chat com IA (verificar se o link citado é o mesmo da orientação encontrada pela busca).
