@@ -114,21 +114,35 @@ O tempo de cada tarefa não foi cronometrado durante a chamada.
 
 **Comentário (P6):** *"Nada atrapalhou. Obtive todas as orientações que precisei e quando o assistente não tinha informação foi claro que não o tinha conhecimento."*
 
+**Participante 2: Rafael.** Teste remoto por chamada de vídeo de 23 minutos, terminada às 00h27 da madrugada seguinte, no próprio celular. O link do bot foi enviado pelo WhatsApp às 00h08 (a prévia já mostra o avatar e a descrição na identidade visual), e as respostas chegaram por mensagem entre 00h21 e 00h26.
+
+As tarefas não foram registradas uma a uma. O participante passou pelo roteiro na chamada e respondeu às perguntas finais.
+
+| P1 Facilidade | P2 Clareza | P3 Acolhimento | P4 Confiança | P5 Viu a fonte? |
+|---|---|---|---|---|
+| 5 | 5 | 5 | 5 | sim |
+
+**Comentário (P6):** o que atrapalhou: *"O texto é comprido"*. O que ajudou: *"A informação estava correta"*.
+
 ### Indicadores de usabilidade
 
-| Indicador | Resultado |
-|---|---|
-| Taxa de conclusão das tarefas | **100%** (5 de 5) |
-| Tempo total da sessão | 25 minutos de chamada, incluindo explicações e as perguntas finais |
-| Tempo médio por tarefa | não medido |
-| Tempo de resposta do bot em produção | 1,4 s a 2,0 s nas mensagens registradas nos logs do Dokploy em 17/11 |
-| Nota média de facilidade (P1) | **5,0 de 5** |
-| Nota média de clareza (P2) | **5,0 de 5** |
-| Acolhimento (P3) e confiança (P4) | **5,0 de 5** |
+| Indicador | Participante 1 | Participante 2 | Geral |
+|---|---|---|---|
+| Taxa de conclusão das tarefas | 100% (5 de 5) | não registrada por tarefa | 5 de 5 nas tarefas registradas |
+| Duração da sessão (chamada) | 25 min | 23 min | média de 24 min |
+| Tempo médio por tarefa | não medido | não medido | não medido |
+| P1 Facilidade | 5 | 5 | **5,0 de 5** |
+| P2 Clareza | 5 | 5 | **5,0 de 5** |
+| P3 Acolhimento | 5 | 5 | **5,0 de 5** |
+| P4 Confiança | 5 | 5 | **5,0 de 5** |
+| P5 Percebeu a fonte oficial | sim (interpretado) | sim | **2 de 2** |
+| Tempo de resposta do bot em produção | — | — | 1,4 s a 2,0 s nas mensagens registradas nos logs do Dokploy em 17/11 |
 
 ### Interpretação
 
-- O participante concluiu todas as tarefas sem ajuda e deu nota máxima em facilidade, clareza, acolhimento e confiança. Isso indica que a conversa pela IA, presa à base verificada, atende ao objetivo de orientar de forma simples.
-- O ponto mais citado foi a **honestidade sobre o limite**: na pergunta fora da base, o assistente deixou claro que não tinha a informação, em vez de inventar. É exatamente o comportamento que a instrução do Modelo C exige.
-- **Limitações da avaliação:** foi um único participante, conhecido da equipe, que não faz parte do público prioritário (pessoas mais velhas ou com pouca familiaridade digital), e os tempos por tarefa não foram cronometrados. As notas máximas podem ter viés de cortesia.
-- **Próximos passos:** repetir o teste com pelo menos 3 pessoas do público-alvo, cronometrar cada tarefa e observar se a pessoa encontra a fonte sem ser perguntada.
+- Os dois participantes deram **nota máxima** em facilidade, clareza, acolhimento e confiança, e os dois perceberam que a resposta cita a fonte oficial. A conversa pela IA, presa à base verificada, atendeu ao objetivo de orientar de forma simples.
+- Os pontos fortes citados foram a **informação correta** (participante 2) e a **honestidade sobre o limite** (participante 1): na pergunta fora da base, o assistente deixou claro que não tinha a informação, em vez de inventar.
+- O ponto fraco apontado foi o **tamanho das respostas** (participante 2: "o texto é comprido"). Mesmo dando nota 5 em clareza, ele achou as mensagens longas para o celular. Isso confirma o que a comparação de modelos já mostrava: o formato completo (Modelo B/C) tem cerca de 107 palavras por resposta, contra 64 do formato direto.
+- **Melhoria proposta:** limitar a resposta da IA a 3 ou 4 frases com a ação principal primeiro, e oferecer o detalhe só se a pessoa pedir ("quer saber mais sobre o prazo?"), mantendo sempre a linha da fonte.
+- **Limitações da avaliação:** apenas 2 participantes, ambos conhecidos da equipe e fora do público prioritário (pessoas mais velhas ou com pouca familiaridade digital); tempos por tarefa não cronometrados; tarefas do participante 2 não registradas uma a uma. As notas máximas podem ter viés de cortesia.
+- **Próximos passos:** aplicar a melhoria do tamanho das respostas e repetir o teste com pelo menos 3 pessoas do público-alvo, cronometrando cada tarefa.
