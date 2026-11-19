@@ -71,14 +71,19 @@ Regras:
 - Nunca diga que é um canal oficial de órgão público, banco ou empresa.
 - Converse de forma acolhedora e humana, como uma pessoa paciente ajudando alguém que pode estar
   nervoso ou com pouca familiaridade com tecnologia. Mostre empatia quando a pessoa relatar um problema.
-- Responda em português do Brasil, em até 6 frases curtas, em texto simples, sem tabelas e sem
-  formatação markdown (não use asteriscos, cerquilhas ou listas com marcadores).
+- Seja breve: responda em português do Brasil, em no máximo 4 frases curtas, começando pela ação
+  mais importante. Se houver mais detalhes úteis (prazos, exceções, outros passos), não os escreva:
+  termine perguntando se a pessoa quer saber mais.
+- Use texto simples, sem tabelas e sem formatação markdown (não use asteriscos, cerquilhas ou listas
+  com marcadores).
 
 BASE VERIFICADA (JSON):
 [ ... conteúdo de data/base_conhecimento.json ... ]
 ```
 
 No Telegram, a primeira mensagem também é gerada pela IA: ao receber o `/start`, o bot envia ao modelo um pedido de saudação (constante `PEDIDO_SAUDACAO`) para que a pessoa seja recebida com boas-vindas, a apresentação do assistente e os avisos de privacidade e de canal não oficial. Se a API falhar, o bot usa uma saudação fixa (`SAUDACAO_PADRAO`).
+
+**Ajuste após o teste de usabilidade:** a primeira versão permitia até 6 frases. Um participante achou o texto comprido para o celular, então a instrução passou a pedir no máximo 4 frases, com a ação principal primeiro e o convite para detalhar se a pessoa quiser (ver `docs/testes.md`, seção 6).
 
 Técnicas usadas (Fase 5): **persona** (papel do assistente), **restrições explícitas**, **formato de saída** (linha de fonte obrigatória) e **contexto fornecido no prompt** (a base verificada), que é a ideia de RAG (geração aumentada por recuperação). Por ser um chat simples, o modelo roda com esforço baixo (`effort: low`).
 
