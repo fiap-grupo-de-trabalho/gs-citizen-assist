@@ -96,34 +96,39 @@ O teste de usabilidade é feito no **bot em produção** ([t.me/citizen_assist_a
 
 ### Resultado do teste de usabilidade
 
-> **A PREENCHER PELA EQUIPE após aplicar o roteiro.** Para mais participantes, repita as colunas.
+**Participante 1: Roberth Siqueira.** Teste remoto em 18/11/2026, por chamada de vídeo de 25 minutos (23h28 às 23h53), usando o bot em produção no próprio celular. As notas foram enviadas por mensagem logo depois (23h43 às 23h47).
 
-**Participante 1** (perfil, sem dados pessoais; ex.: "mulher, 60+, usa WhatsApp todo dia"): ____
+| Tarefa | Concluiu? | Observação |
+|---|---|---|
+| 1. Abrir o bot e iniciar | sim | sem dificuldade relatada |
+| 2. Golpe do Pix | sim | obteve a orientação |
+| 3. "E se o banco não resolver?" | sim | obteve a orientação |
+| 4. Devolver compra pela internet | sim | obteve a orientação |
+| 5. Passaporte (fora da base) | sim | percebeu que o assistente "foi claro que não tinha conhecimento" |
 
-| Tarefa | Concluiu? (s/n) | Tempo (s) | Dificuldade observada |
-|---|---|---|---|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
+O tempo de cada tarefa não foi cronometrado durante a chamada.
 
 | P1 Facilidade | P2 Clareza | P3 Acolhimento | P4 Confiança | P5 Viu a fonte? |
 |---|---|---|---|---|
-| | | | | |
+| 5 | 5 | 5 | 5 | 5 (respondeu com nota máxima, interpretada como "sim") |
 
-Comentários (P6): ____
+**Comentário (P6):** *"Nada atrapalhou. Obtive todas as orientações que precisei e quando o assistente não tinha informação foi claro que não o tinha conhecimento."*
 
 ### Indicadores de usabilidade
 
-| Indicador | Como calcular | Resultado |
-|---|---|---|
-| Taxa de conclusão das tarefas | tarefas concluídas ÷ tarefas aplicadas | ____ |
-| Tempo médio por tarefa | soma dos tempos ÷ tarefas | ____ |
-| Tempo médio de resposta do bot | média dos "Mensagem respondida em X s" nos logs do Dokploy | ____ |
-| Nota média de facilidade (P1) | média das notas | ____ |
-| Nota média de clareza (P2) | média das notas | ____ |
+| Indicador | Resultado |
+|---|---|
+| Taxa de conclusão das tarefas | **100%** (5 de 5) |
+| Tempo total da sessão | 25 minutos de chamada, incluindo explicações e as perguntas finais |
+| Tempo médio por tarefa | não medido |
+| Tempo de resposta do bot em produção | 1,4 s a 2,0 s nas mensagens registradas nos logs do Dokploy em 17/11 |
+| Nota média de facilidade (P1) | **5,0 de 5** |
+| Nota média de clareza (P2) | **5,0 de 5** |
+| Acolhimento (P3) e confiança (P4) | **5,0 de 5** |
 
 ### Interpretação
 
-> **A PREENCHER:** o que funcionou, onde houve dificuldade e qual melhoria isso sugere (por exemplo: respostas longas demais para o celular, pessoa não percebeu a fonte, dúvida sobre como começar).
+- O participante concluiu todas as tarefas sem ajuda e deu nota máxima em facilidade, clareza, acolhimento e confiança. Isso indica que a conversa pela IA, presa à base verificada, atende ao objetivo de orientar de forma simples.
+- O ponto mais citado foi a **honestidade sobre o limite**: na pergunta fora da base, o assistente deixou claro que não tinha a informação, em vez de inventar. É exatamente o comportamento que a instrução do Modelo C exige.
+- **Limitações da avaliação:** foi um único participante, conhecido da equipe, que não faz parte do público prioritário (pessoas mais velhas ou com pouca familiaridade digital), e os tempos por tarefa não foram cronometrados. As notas máximas podem ter viés de cortesia.
+- **Próximos passos:** repetir o teste com pelo menos 3 pessoas do público-alvo, cronometrar cada tarefa e observar se a pessoa encontra a fonte sem ser perguntada.
