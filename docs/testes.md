@@ -96,7 +96,7 @@ O teste de usabilidade é feito no **bot em produção** ([t.me/citizen_assist_a
 
 ### Resultado do teste de usabilidade
 
-**Participante 1: Roberth Siqueira.** Teste remoto em 18/11/2026, por chamada de vídeo de 25 minutos (23h28 às 23h53), usando o bot em produção no próprio celular. As notas foram enviadas por mensagem logo depois (23h43 às 23h47).
+**Participante 1: Roberth Siqueira.** Teste remoto em 19/11/2026, por chamada de vídeo de 25 minutos (23h28 às 23h53), usando o bot em produção no próprio celular. As notas foram enviadas por mensagem logo depois (23h43 às 23h47).
 
 | Tarefa | Concluiu? | Observação |
 |---|---|---|
