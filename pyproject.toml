@@ -5,9 +5,9 @@ description = "Citizen Assist AI - assistente de orientação cidadã sobre golp
 readme = "README.md"
 requires-python = ">=3.12"
 authors = [
-    { name = "Carlos Eugênio", email = "carloseugenioprofissional@gmail.com" },
-    { name = "Emanuel" },
-    { name = "Leonardo Tims" },
+    { name = "Carlos Eugênio Rodrigues de Andrade Filho", email = "carloseugenioprofissional@gmail.com" },
+    { name = "Emanuel Batista Braga Domingues" },
+    { name = "Leonardo Tims Carneiro Campello" },
     { name = "Matheus Fuchelberguer Neves", email = "fuchelberguerneves@gmail.com" },
     { name = "Rodrigo Gomes Dias", email = "rodrigogmdias@gmail.com" },
 ]

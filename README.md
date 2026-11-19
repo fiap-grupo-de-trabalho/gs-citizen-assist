@@ -43,9 +43,9 @@ A conversa é feita pela IA (**Claude Haiku 5.5**), em tom acolhedor e **usando 
 
 | Integrante | RM | GitHub |
 |---|---|---|
-| Carlos Eugênio | RM570285 | [carloseugenioandrade](https://github.com/carloseugenioandrade) |
-| Emanuel | RM569732 | [Emanu06](https://github.com/Emanu06) |
-| Leonardo Tims | RM571048 | [timsleo](https://github.com/timsleo) |
+| Carlos Eugênio Rodrigues de Andrade Filho | RM570285 | [carloseugenioandrade](https://github.com/carloseugenioandrade) |
+| Emanuel Batista Braga Domingues | RM569732 | [Emanu06](https://github.com/Emanu06) |
+| Leonardo Tims Carneiro Campello | RM571048 | [timsleo](https://github.com/timsleo) |
 | Matheus Fuchelberguer Neves | RM571321 | [Fuchens28](https://github.com/Fuchens28) |
 | Rodrigo Gomes Dias | RM569142 | [rodrigogmdias](https://github.com/rodrigogmdias) |
 
