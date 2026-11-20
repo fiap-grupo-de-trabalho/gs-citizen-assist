@@ -51,7 +51,7 @@ A conversa é feita pela IA (**Claude Haiku 5.5**), em tom acolhedor e **usando 
 
 ## Vídeo de apresentação
 
-YouTube (não listado): **LINK_DO_VIDEO**
+YouTube (não listado): **[https://youtu.be/aqGEmB_ft78](https://youtu.be/aqGEmB_ft78)**
 
 ---
 
